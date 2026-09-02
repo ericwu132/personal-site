@@ -412,6 +412,15 @@ body {
   color: var(--ink);
 }
 
+/* Stands in for a page's content while it's still being written. */
+.page-note {
+  margin-top: clamp(1rem, 3.5vw, 1.5rem);
+  font-size: clamp(0.98rem, 3.4vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;

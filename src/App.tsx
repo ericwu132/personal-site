@@ -54,7 +54,14 @@ export default function App() {
           />
           <Route
             path="/notes"
-            element={<EntryList heading="notes" basePath="/notes" entries={notes} />}
+            element={
+              <EntryList
+                heading="notes"
+                basePath="/notes"
+                entries={notes}
+                emptyNote="work in progress! i’m working hard to get these pushed out."
+              />
+            }
           />
           <Route
             path="/notes/:slug"

@@ -98,35 +98,9 @@ export const projects: Project[] = [
   },
 ]
 
-export const notes: Entry[] = [
-  {
-    slug: 'lorem-ipsum-dolor',
-    title: 'lorem ipsum dolor',
-    date: 'august 2026',
-    body: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    ],
-  },
-  {
-    slug: 'sed-do-eiusmod',
-    title: 'sed do eiusmod tempor',
-    date: 'july 2026',
-    body: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    ],
-  },
-  {
-    slug: 'ut-labore',
-    title: 'ut labore et dolore',
-    date: 'june 2026',
-    body: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    ],
-  },
-]
+/** Nothing published yet — /notes shows its work-in-progress note while
+    this is empty. See `work` below for the shape of an entry. */
+export const notes: Entry[] = []
 
 /** Placeholder — real roles and case studies to come. */
 export const work: Entry[] = [

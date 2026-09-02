@@ -14,10 +14,10 @@ type NavItem = {
 //   devpost   https://devpost.com/ericwu132
 //   instagram https://www.instagram.com/ericwu132/
 const items: NavItem[] = [
+  { label: 'about', to: '/about' },
   { label: 'work', to: '/work' },
   { label: 'projects', to: '/projects' },
   { label: 'notes', to: '/notes' },
-  { label: 'about', to: '/about' },
   { label: 'resume', to: '/EricResumeExternal.pdf', external: true },
 ]
 

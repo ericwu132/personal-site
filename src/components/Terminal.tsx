@@ -12,10 +12,10 @@ const LINKS: Record<string, string> = {
   email: 'mailto:e95wu@uwaterloo.ca',
 }
 
-const ROUTES = ['work', 'projects', 'notes', 'about']
+const ROUTES = ['about', 'work', 'projects', 'notes']
 
 const HELP =
-  'commands: work · projects · notes · about · resume · linkedin · github · x · email · whoami · clear'
+  'commands: about · work · projects · notes · resume · linkedin · github · x · email · whoami · clear'
 
 const MAX_BUFFER = 40
 
