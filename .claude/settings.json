@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sL --max-time 25 \"https://www.spydercontrols.com/application/files/6317/2141/0091/spc--icon.png\" -o spc.png)",
+      "Bash(curl -sL --max-time 25 \"https://www.watonomous.ca/favicon.ico\" -o wato.ico)",
+      "Bash(node -e ' *)",
+      "Bash(curl -sL --max-time 20 https://www.spydercontrols.com/)"
+    ]
+  }
+}

@@ -1,0 +1,577 @@
+/* ---------------------------------------------------------------- reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+h1,
+h2,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ---------------------------------------------------------------- tokens */
+
+/* Deep olive ground with cream text. Palette sampled from ericwu.work:
+   #2d3a1f deep olive, #f5f2ea cream, #98a85e accent.
+
+   The site commits to this one look rather than following the OS light/dark
+   setting. For the inverted cream-paper version, add data-theme="cream" to
+   <html> in index.html. */
+:root {
+  --paper: #2d3a1f;
+  --ink: #f5f2ea;
+  --ink-soft: #f5f2eab0;
+  --ink-faint: #f5f2ea63; /* incidental text that shouldn't pull the eye */
+  --rule: #f5f2ea2b;
+  --accent: #98a85e;
+
+  color-scheme: dark;
+  /* Latin resolves from Times; CJK falls through to a serif companion
+     (Songti on macOS/iOS, SimSun on Windows, Noto elsewhere) so mixed-script
+     greetings don't drop into a system sans mid-line. */
+  font-family: 'Times New Roman', Times, 'Songti SC', 'Songti TC', 'SimSun',
+    'Noto Serif CJK SC', 'Noto Serif SC', serif;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--paper);
+}
+
+/* ------------------------------------------------------------ page shell */
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* fallback for browsers without dynamic viewport units */
+  min-height: 100dvh; /* tracks mobile browser chrome as it shows and hides */
+  padding: clamp(1.5rem, 6vw, 3rem);
+  /* Tighter underneath, so the footer sits closer to the bottom edge. */
+  padding-bottom: clamp(1rem, 3.5vw, 1.75rem);
+}
+
+/* Crossfades between routes. App.tsx holds the outgoing page on screen for
+   exactly this long before swapping in the incoming one. */
+.route {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  transition: opacity 220ms ease;
+}
+
+.route[data-leaving] {
+  opacity: 0;
+}
+
+/* Auto margins rather than justify-content, so content taller than the
+   viewport scrolls instead of having its top edge clipped. */
+.hero,
+.page {
+  margin: auto;
+  width: 100%;
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.hero {
+  max-width: 34rem;
+  text-align: center;
+}
+
+.hero-name {
+  font-size: clamp(1.75rem, 7vw, 3rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* Height follows the viewBox's aspect ratio, so the box is its final size from
+   the first frame — only the stroke dash animates, and nothing reflows. */
+.signature {
+  display: block;
+  width: min(360px, 82%);
+  height: auto;
+  margin: clamp(0.5rem, 2vw, 0.9rem) auto 0;
+  color: var(--ink);
+  overflow: visible;
+}
+
+.hero-subtitle {
+  margin-top: clamp(0.75rem, 3vw, 1.15rem);
+  font-size: clamp(1rem, 3.6vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: balance;
+}
+
+/* Inline link inside prose. Same brighten-on-hover as the footer icons —
+   no lift, since a word shifting mid-sentence reflows the line. */
+.text-link {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.text-link:hover,
+.text-link:focus-visible {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------- typewriter */
+
+/* The hidden full string and the visible partial one are stacked in a single
+   grid cell, so the line never changes width or height while typing. Grid
+   (rather than absolute positioning) means BOTH children size the cell, so the
+   box can never end up narrower than the text actually being drawn in it. */
+.type {
+  display: inline-grid;
+}
+
+.type > * {
+  grid-area: 1 / 1;
+}
+
+.type-reserve {
+  visibility: hidden;
+}
+
+.cursor {
+  margin-left: 0.06em;
+  animation: blink 1.05s steps(1) infinite;
+}
+
+.cursor[data-done] {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.45s ease 0.5s;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------------------------- terminal */
+
+/* Both lines are reserved from the start, so the centered hero never shifts
+   when someone starts typing. */
+.terminal {
+  margin-top: clamp(1.1rem, 4vw, 1.6rem);
+  font-size: 0.85rem;
+}
+
+.terminal-line {
+  min-height: 1.5em;
+  color: var(--ink-soft);
+}
+
+/* A <button>, stripped back to look like the text it replaces. The I-beam
+   cursor and the click-to-caret swap are what say "you can type here". */
+.terminal-hint {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--ink-faint);
+  font-style: italic;
+  cursor: text;
+  transition: color 0.2s ease;
+}
+
+.terminal-hint:hover,
+.terminal-hint:focus-visible {
+  color: var(--ink-soft);
+}
+
+.terminal-response {
+  margin-top: 0.3rem;
+  min-height: 1.4em;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------- nav */
+
+.nav {
+  margin-top: clamp(1.35rem, 5vw, 2.25rem);
+}
+
+.nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.85rem, 4vw, 1.75rem);
+}
+
+.nav a,
+.back {
+  color: var(--ink);
+  font-size: clamp(1rem, 3.6vw, 1.1rem);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.nav a:hover,
+.nav a:focus-visible,
+.back:hover,
+.back:focus-visible {
+  border-bottom-color: currentColor;
+}
+
+/* --------------------------------------------------------------- subpages */
+
+.page {
+  max-width: 38rem;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: clamp(1.75rem, 6vw, 2.75rem);
+  color: var(--ink-soft);
+  font-size: 1rem;
+}
+
+.page-title {
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
+  font-weight: 400;
+  margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.page-meta {
+  margin-top: -0.75rem;
+  margin-bottom: clamp(1.25rem, 4vw, 1.75rem);
+  color: var(--ink-soft);
+}
+
+.meta {
+  font-style: italic;
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------- project cards */
+
+.cards li + li,
+.entries li + li {
+  margin-top: clamp(1.25rem, 4vw, 1.75rem);
+  padding-top: clamp(1.25rem, 4vw, 1.75rem);
+  border-top: 1px solid var(--rule);
+}
+
+/* Whole card is one link, so the target is the row rather than the title. */
+.card,
+.entry {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Text left, org logo right. A row with no logo has a single flex child, so
+   the text stays put and notes need no special case. */
+.entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.entry-text {
+  min-width: 0;
+}
+
+.entry-logo {
+  width: clamp(28px, 7vw, 34px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.entry:hover .entry-logo,
+.entry:focus-visible .entry-logo {
+  opacity: 1;
+}
+
+.card {
+  display: grid;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+@media (min-width: 34rem) {
+  .card {
+    grid-template-columns: 11rem 1fr;
+    align-items: start;
+  }
+}
+
+.card h2,
+.entry h2 {
+  font-size: clamp(1.1rem, 4vw, 1.25rem);
+  font-weight: 400;
+  border-bottom: 1px solid transparent;
+  display: inline-block;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover h2,
+.card:focus-visible h2,
+.entry:hover h2,
+.entry:focus-visible h2 {
+  border-bottom-color: var(--accent);
+}
+
+.card p,
+.entry p {
+  margin-top: 0.4rem;
+  font-size: clamp(0.95rem, 3.4vw, 1.05rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------ image slots and prose */
+
+/* Holds the exact space a photo will occupy, so dropping real files in
+   later doesn't shift anything around them. */
+.thumb {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover .thumb,
+.card:focus-visible .thumb {
+  border-color: var(--accent);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 16:9 frame that holds its space before the iframe paints. */
+.embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.prose {
+  margin-top: clamp(1.25rem, 4vw, 1.75rem);
+  color: var(--ink-soft);
+}
+
+/* Opening line of a project, set a shade brighter than the body. */
+.lede {
+  color: var(--ink);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.links a {
+  color: var(--ink);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease;
+}
+
+.links a:hover,
+.links a:focus-visible {
+  opacity: 0.7;
+}
+
+.prose p {
+  font-size: clamp(0.98rem, 3.4vw, 1.05rem);
+  line-height: 1.65;
+}
+
+.prose p + p {
+  margin-top: 1rem;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+/* .route carries flex: 1, so this settles at the bottom on short and tall
+   pages alike; #root's padding is the gap beneath it. */
+.site-footer {
+  width: 100%;
+  padding-top: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+/* Icons, then the copyright centred beneath them. */
+.footer-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.7rem, 2.5vw, 1.1rem);
+}
+
+/* email + linkedin | webring | github + x. With equal-width flanks and one
+   uniform gap, the row is symmetric about the ring, which is what puts the
+   sparkle on the page's exact centerline. Add future icons in pairs, or
+   switch .footer-row to grid-template-columns: 1fr auto 1fr. */
+.footer-icons {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 3vw, 1.15rem);
+}
+
+/* One rule for the social icons and the ring links, so they brighten
+   identically on hover. No transform — the row stays put. */
+.icon-link,
+.webring a {
+  display: inline-flex;
+  color: var(--ink);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.icon-link:hover,
+.icon-link:focus-visible,
+.webring a:hover,
+.webring a:focus-visible {
+  opacity: 1;
+}
+
+.webring {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* The ring artwork is white, which suits the olive ground as-is. */
+.ring-arrow {
+  width: 11px;
+  height: auto;
+}
+
+.ring-mark {
+  width: 26px;
+  height: auto;
+}
+
+.copyright {
+  font-size: 0.62rem;
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------- short viewports */
+
+/* Landscape phones and short windows: the hero plus the footer overflow an
+   already-cramped height, which would put the copyright below the fold.
+   Tighten the vertical rhythm so everything still fits without scrolling. */
+@media (max-height: 560px) {
+  #root {
+    padding: 0.9rem clamp(1rem, 5vw, 3rem);
+  }
+
+  .hero-subtitle {
+    margin-top: 0.45rem;
+  }
+
+  .nav {
+    margin-top: 0.8rem;
+  }
+
+  .terminal {
+    margin-top: 0.55rem;
+  }
+
+  .site-footer {
+    padding-top: 0.9rem;
+  }
+
+  .footer-row {
+    gap: 0.5rem;
+  }
+}
+
+/* ----------------------------------------------------- alternative scheme */
+
+/* Inverted: cream paper, deep olive ink.
+   Enable with <html data-theme="cream"> in index.html. */
+:root[data-theme='cream'] {
+  --paper: #f5f2ea;
+  --ink: #2d3a1f;
+  --ink-soft: #2d3a1fa6;
+  --ink-faint: #2d3a1f5c;
+  --rule: #2d3a1f2e;
+  --accent: #597143;
+
+  color-scheme: light;
+}
+
+/* The webring artwork is white, so it needs flipping on a light ground. */
+:root[data-theme='cream'] .ring-arrow,
+:root[data-theme='cream'] .ring-mark {
+  filter: invert(1);
+}
+
+/* --------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
