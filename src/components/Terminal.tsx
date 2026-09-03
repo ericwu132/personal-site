@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import AnimatedContent from './AnimatedContent'
-import { useFinePointer } from '../useFinePointer'
 
 /**
  * Where messages go. The site is static, so a message can only reach an inbox
  * via a form service: the page POSTs here and Formspree emails Eric.
  *
  * This is a plain JSON POST rather than @formspree/react's `useForm`, because
- * the prompt isn't a <form> — there are no inputs to bind, just a keystroke
- * buffer. Formspree's AJAX endpoint accepts JSON directly, so the library
- * would add a dependency and buy nothing.
+ * the prompt is one bare input rather than a <form> with named fields.
+ * Formspree's AJAX endpoint accepts JSON directly, so the library would add a
+ * dependency and buy nothing.
  *
  * Public by design: a Formspree form id is safe in a public repo.
  */
@@ -98,125 +97,93 @@ type TerminalProps = {
   show: boolean
   /** Render settled at once (returning visitor within this page load). */
   skip?: boolean
-  /** Milliseconds after `show` before the hint fades in. */
+  /** Milliseconds after `show` before the prompt fades in. */
   hintDelay?: number
 }
 
 /**
- * The typewriter, made typeable — now a message box rather than a command
- * line. Typing to navigate only duplicated the tabs sitting right above it.
+ * A message box dressed as a terminal line.
  *
- * Clicking the hint arms a caret; typing fills it; Enter sends. It never
- * advertises itself on keyboardless devices, since it needs a keyboard.
+ * It is a real <input>, not a keystroke buffer painted onto a <span>. That is
+ * what makes it work on a phone — tapping an input is the only thing that
+ * opens the on-screen keyboard — and it comes with paste, selection, and IME
+ * (so the 你好 greeting can actually be typed back) for free. It also gives
+ * the "can't type until you click in" behaviour natively: an unfocused input
+ * receives nothing.
  */
 export default function Terminal({ show, skip = false, hintDelay = 1200 }: TerminalProps) {
-  const fine = useFinePointer()
   const [buffer, setBuffer] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   // Held separately from `status` so the cooldown can count down in its text.
   const [response, setResponse] = useState('')
-  // Clicking the hint swaps it for a blinking caret — the signal to type.
-  const [armed, setArmed] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    const send = async () => {
-      // Clearing the buffer already prevents a double-send; this also stops a
-      // second Enter landing while a slow request is still in flight.
-      const message = buffer.trim()
-      if (!message || status === 'sending') return
+  const send = async () => {
+    const message = buffer.trim()
+    if (!message || status === 'sending') return
 
-      const wait = cooldownRemaining()
-      if (wait > 0) {
-        // Keep what they typed — they only have to wait, not retype.
-        setResponse(`easy — one message every 30s. try again in ${Math.ceil(wait / 1000)}s.`)
-        return
-      }
+    const wait = cooldownRemaining()
+    if (wait > 0) {
+      // Keep what they typed — they only have to wait, not retype.
+      setResponse(`easy — one message every 30s. try again in ${Math.ceil(wait / 1000)}s.`)
+      return
+    }
 
-      setStatus('sending')
-      setResponse('sending…')
-      setBuffer('')
-      try {
-        if (await sendMessage(message)) {
-          markSent()
-          setStatus('sent')
-          setResponse('sent! thanks for the note.')
-        } else {
-          setStatus('error')
-          setResponse('that didn’t go through — the mail icon below works too.')
-        }
-      } catch {
+    setStatus('sending')
+    setResponse('sending…')
+    setBuffer('')
+    try {
+      if (await sendMessage(message)) {
+        markSent()
+        setStatus('sent')
+        setResponse('sent! thanks for the note.')
+      } else {
         setStatus('error')
         setResponse('that didn’t go through — the mail icon below works too.')
       }
+    } catch {
+      setStatus('error')
+      setResponse('that didn’t go through — the mail icon below works too.')
     }
-
-    const onKey = (e: KeyboardEvent) => {
-      // The prompt only listens once it has been clicked into, the way a real
-      // input does — stray keystrokes on the page shouldn't land in it.
-      if (!armed) return
-      if (e.metaKey || e.ctrlKey || e.altKey) return
-      const t = e.target as HTMLElement | null
-      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
-
-      if (e.key === 'Enter') {
-        void send()
-      } else if (e.key === 'Escape') {
-        setBuffer('')
-        setStatus('idle')
-        setResponse('')
-        setArmed(false)
-      } else if (e.key === 'Backspace') {
-        setBuffer((b) => b.slice(0, -1))
-      } else if (e.key.length === 1) {
-        // A leading space would only scroll the page.
-        if (buffer === '' && e.key === ' ') return
-        e.preventDefault()
-        setBuffer((b) => (b.length < MAX_BUFFER ? b + e.key : b))
-      }
-    }
-
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [armed, buffer, status])
-
-  // Clicking anywhere outside the prompt line hands the hint back, like an
-  // input losing focus.
-  useEffect(() => {
-    const onPointerDown = (e: PointerEvent) => {
-      if ((e.target as Element | null)?.closest?.('.terminal-line')) return
-      setArmed(false)
-      setBuffer('')
-      setStatus('idle')
-      setResponse('')
-    }
-    document.addEventListener('pointerdown', onPointerDown)
-    return () => document.removeEventListener('pointerdown', onPointerDown)
-  }, [])
+  }
 
   return (
     <div className="terminal">
       <AnimatedContent show={show} skip={skip} delay={hintDelay}>
         <p className="terminal-line">
-          {armed ? (
-            <span aria-hidden="true">
-              &gt; {buffer}
-              <span className="cursor">|</span>
-            </span>
-          ) : fine ? (
-            <button
-              type="button"
-              className="terminal-hint"
-              onClick={() => setArmed(true)}
-              aria-label="leave a message"
-            >
-              &gt; leave me a message…
-            </button>
-          ) : (
-            ' '
-          )}
+          <span className="terminal-arrow" aria-hidden="true">
+            &gt;
+          </span>
+          <input
+            ref={inputRef}
+            className="terminal-input"
+            type="text"
+            value={buffer}
+            placeholder="leave me a message…"
+            aria-label="leave me a message"
+            maxLength={MAX_BUFFER}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="send"
+            onChange={(e) => setBuffer(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                void send()
+              } else if (e.key === 'Escape') {
+                setBuffer('')
+                setResponse('')
+                inputRef.current?.blur()
+              }
+            }}
+          />
         </p>
         <p className="terminal-response" aria-live="polite">
-          {response || (armed ? 'enter to send — add your email if you’d like a reply' : ' ')}
+          {response || (focused ? 'enter to send — add your email if you’d like a reply' : ' ')}
         </p>
       </AnimatedContent>
     </div>

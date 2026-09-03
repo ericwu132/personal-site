@@ -186,26 +186,44 @@ body {
 }
 
 .terminal-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4em;
   min-height: 1.5em;
   color: var(--ink-soft);
 }
 
-/* A <button>, stripped back to look like the text it replaces. The I-beam
-   cursor and the click-to-caret swap are what say "you can type here". */
-.terminal-hint {
-  background: none;
-  border: 0;
-  padding: 0;
-  font: inherit;
+.terminal-arrow {
   color: var(--ink-faint);
-  font-style: italic;
-  cursor: text;
-  transition: color 0.2s ease;
+  flex-shrink: 0;
 }
 
-.terminal-hint:hover,
-.terminal-hint:focus-visible {
-  color: var(--ink-soft);
+/* A real <input>, stripped back to look like the text around it. Being a real
+   input is what makes it work on a phone: tapping it opens the keyboard. */
+.terminal-input {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  outline: none;
+  padding: 0 0 2px;
+  font: inherit;
+  color: var(--ink);
+  caret-color: var(--accent);
+  width: min(24rem, 76%);
+  transition: border-color 0.2s ease;
+}
+
+.terminal-input::placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+  opacity: 1; /* Firefox dims placeholders by default */
+}
+
+/* The caret marks focus for a mouse; this marks it for a keyboard, since the
+   native outline is removed. */
+.terminal-input:focus {
+  border-bottom-color: var(--rule);
 }
 
 .terminal-response {
