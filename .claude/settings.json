@@ -11,7 +11,12 @@
       "Bash(git push *)",
       "Bash(curl -sIL --max-time 20 https://github.com/ericwu132/personal-site -o /dev/null -w 'HTTP %{http_code}\\\\n')",
       "Bash(git ls-tree *)",
-      "Bash(awk '/^export const notes/,/^\\\\]/' src/content.ts)"
+      "Bash(awk '/^export const notes/,/^\\\\]/' src/content.ts)",
+      "Bash(mkdir -p shots8)",
+      "Bash(node drive8.mjs)",
+      "Bash(curl -s -X POST https://formspree.io/f/xyeyjdek -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{\"message\":\"test from claude code — verifying the endpoint works. reply-to should be e95wu@uwaterloo.ca\",\"_subject\":\"a message from your site\",\"email\":\"e95wu@uwaterloo.ca\"}' -w '\\\\nHTTP %{http_code}\\\\n' --max-time 30)",
+      "Bash(curl -s -X POST https://formspree.io/f/xyeyjdek -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Origin: http://localhost:5173' -H 'Referer: http://localhost:5173/' -d '{\"message\":\"test 2\"}' -w '\\\\nHTTP %{http_code}\\\\n' --max-time 30)",
+      "Bash(curl -s -X POST https://formspree.io/f/xyeyjdek -H 'Accept: application/json' -H 'Origin: http://localhost:5173' -d 'message=test3' -w '\\\\nHTTP %{http_code}\\\\n' --max-time 30)"
     ]
   }
 }

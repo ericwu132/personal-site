@@ -1,26 +1,100 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import AnimatedContent from './AnimatedContent'
 import { useFinePointer } from '../useFinePointer'
 
-/** External targets, mirroring the footer. */
-const LINKS: Record<string, string> = {
-  resume: '/EricResumeExternal.pdf',
-  linkedin: 'https://www.linkedin.com/in/w-eric/',
-  github: 'https://github.com/ericwu132',
-  x: 'https://x.com/ericwu132',
-  email: 'mailto:e95wu@uwaterloo.ca',
+/**
+ * Where messages go. The site is static, so a message can only reach an inbox
+ * via a form service: the page POSTs here and Formspree emails Eric.
+ *
+ * This is a plain JSON POST rather than @formspree/react's `useForm`, because
+ * the prompt isn't a <form> — there are no inputs to bind, just a keystroke
+ * buffer. Formspree's AJAX endpoint accepts JSON directly, so the library
+ * would add a dependency and buy nothing.
+ *
+ * Public by design: a Formspree form id is safe in a public repo.
+ */
+const FORM_ENDPOINT = 'https://formspree.io/f/xyeyjdek'
+
+/** Web3Forms only. Formspree identifies the form by its URL alone. */
+const ACCESS_KEY = ''
+
+/** First email address in the message, if the sender included one. */
+const EMAIL_RE = /[^\s@]+@[^\s@]+\.[^\s@]{2,}/
+
+/** A message, not a command — 40 characters was a command's length. */
+const MAX_BUFFER = 500
+
+type Status = 'idle' | 'sending' | 'sent' | 'error'
+
+/**
+ * Minimum gap between two successful sends from one browser.
+ *
+ * This is a speed bump, not a security control — anyone willing to open
+ * devtools or a private window walks straight past it. It exists to stop
+ * casual repeat-sending. The real ceiling is Formspree's own spam filtering
+ * and the 50-per-month cap on the free plan.
+ */
+const COOLDOWN_MS = 30_000
+const LAST_SENT_KEY = 'terminal:lastSent'
+
+/** Milliseconds still to wait, or 0. localStorage access is guarded: private
+ *  browsing and blocked site data both throw on read. */
+function cooldownRemaining(): number {
+  try {
+    const last = Number(localStorage.getItem(LAST_SENT_KEY))
+    if (!last) return 0
+    // A clock change could put `last` in the future; treat that as expired
+    // rather than locking the visitor out indefinitely.
+    const elapsed = Date.now() - last
+    if (elapsed < 0) return 0
+    return Math.max(0, COOLDOWN_MS - elapsed)
+  } catch {
+    return 0
+  }
 }
 
-const ROUTES = ['about', 'work', 'projects', 'notes']
+function markSent() {
+  try {
+    localStorage.setItem(LAST_SENT_KEY, String(Date.now()))
+  } catch {
+    // No storage to remember by; the cooldown just won't survive a reload.
+  }
+}
 
-const HELP =
-  'commands: about · work · projects · notes · resume · linkedin · github · x · email · whoami · clear'
+async function sendMessage(message: string): Promise<boolean> {
+  if (!FORM_ENDPOINT) {
+    // Not configured: never fire a request at an endpoint that isn't there,
+    // and never claim success. If this ships unconfigured, a visitor must be
+    // told their message didn't land rather than being quietly dropped.
+    console.warn(
+      '[terminal] FORM_ENDPOINT is empty — nothing was sent. Paste a Formspree ' +
+        'form URL or Web3Forms key in Terminal.tsx to enable messages. Message was:',
+      message,
+    )
+    return false
+  }
+  const body: Record<string, string> = {
+    message,
+    // Formspree reads _subject for the email's subject line.
+    _subject: 'a message from your site',
+  }
+  // The prompt invites people to include their email for a reply. Lifting it
+  // into `email` makes Formspree set Reply-To, so replying just works — the
+  // full message still carries it either way if the match is wrong.
+  const sender = message.match(EMAIL_RE)?.[0]
+  if (sender) body.email = sender
+  if (ACCESS_KEY) body.access_key = ACCESS_KEY
 
-const MAX_BUFFER = 40
+  const res = await fetch(FORM_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(body),
+  })
+  return res.ok
+}
 
 type TerminalProps = {
-  /** Gate on the hero reveal finishing. */
+  /** Gate on the hero reveal. */
   show: boolean
   /** Render settled at once (returning visitor within this page load). */
   skip?: boolean
@@ -29,67 +103,50 @@ type TerminalProps = {
 }
 
 /**
- * The typewriter, made typeable. A faint hint appears under the tabs; typing
- * anywhere on the home page fills a prompt line, Enter runs the command. The
- * tabs stay the real navigation — this is a layer for the curious, and it
- * never advertises itself on keyboardless devices.
+ * The typewriter, made typeable — now a message box rather than a command
+ * line. Typing to navigate only duplicated the tabs sitting right above it.
+ *
+ * Clicking the hint arms a caret; typing fills it; Enter sends. It never
+ * advertises itself on keyboardless devices, since it needs a keyboard.
  */
 export default function Terminal({ show, skip = false, hintDelay = 1200 }: TerminalProps) {
-  const navigate = useNavigate()
   const fine = useFinePointer()
   const [buffer, setBuffer] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
+  // Held separately from `status` so the cooldown can count down in its text.
   const [response, setResponse] = useState('')
-  // Clicking the hint swaps it for a blinking caret — the signal to start
-  // typing. Typing without clicking works too; Escape hands the hint back.
+  // Clicking the hint swaps it for a blinking caret — the signal to type.
   const [armed, setArmed] = useState(false)
 
   useEffect(() => {
-    const run = () => {
-      const cmd = buffer.trim().toLowerCase()
-      if (!cmd) return
-      setBuffer('')
+    const send = async () => {
+      // Clearing the buffer already prevents a double-send; this also stops a
+      // second Enter landing while a slow request is still in flight.
+      const message = buffer.trim()
+      if (!message || status === 'sending') return
 
-      if (ROUTES.includes(cmd)) {
-        navigate(`/${cmd}`)
+      const wait = cooldownRemaining()
+      if (wait > 0) {
+        // Keep what they typed — they only have to wait, not retype.
+        setResponse(`easy — one message every 30s. try again in ${Math.ceil(wait / 1000)}s.`)
         return
       }
-      if (cmd === 'home' || cmd === 'cd') {
-        setResponse('already here.')
-        return
-      }
-      if (cmd === 'email') {
-        setResponse('opening your mail app…')
-        window.location.assign(LINKS.email)
-        return
-      }
-      if (LINKS[cmd]) {
-        setResponse(`opening ${cmd}…`)
-        window.open(LINKS[cmd], '_blank', 'noopener,noreferrer')
-        return
-      }
-      switch (cmd) {
-        case 'help':
-        case '?':
-          setResponse(HELP)
-          break
-        case 'hi':
-        case 'hello':
-        case 'hey':
-          setResponse('hi! nice meeting you')
-          break
-        case 'nihao':
-        case '你好':
-        case 'ni hao':
-          setResponse('你好!')
-          break
-        case 'whoami':
-          setResponse('eric wu. wait, that’s me! you’re you.')
-          break
-        case 'clear':
-          setResponse('')
-          break
-        default:
-          setResponse(`command not found: ${cmd} — try 'help'`)
+
+      setStatus('sending')
+      setResponse('sending…')
+      setBuffer('')
+      try {
+        if (await sendMessage(message)) {
+          markSent()
+          setStatus('sent')
+          setResponse('sent! thanks for the note.')
+        } else {
+          setStatus('error')
+          setResponse('that didn’t go through — the mail icon below works too.')
+        }
+      } catch {
+        setStatus('error')
+        setResponse('that didn’t go through — the mail icon below works too.')
       }
     }
 
@@ -102,16 +159,16 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
 
       if (e.key === 'Enter') {
-        run()
+        void send()
       } else if (e.key === 'Escape') {
         setBuffer('')
+        setStatus('idle')
         setResponse('')
         setArmed(false)
       } else if (e.key === 'Backspace') {
         setBuffer((b) => b.slice(0, -1))
       } else if (e.key.length === 1) {
-        // A leading space would only scroll the page; require a real character
-        // to start a command.
+        // A leading space would only scroll the page.
         if (buffer === '' && e.key === ' ') return
         e.preventDefault()
         setBuffer((b) => (b.length < MAX_BUFFER ? b + e.key : b))
@@ -120,7 +177,7 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
 
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [armed, buffer, navigate])
+  }, [armed, buffer, status])
 
   // Clicking anywhere outside the prompt line hands the hint back, like an
   // input losing focus.
@@ -129,6 +186,7 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
       if ((e.target as Element | null)?.closest?.('.terminal-line')) return
       setArmed(false)
       setBuffer('')
+      setStatus('idle')
       setResponse('')
     }
     document.addEventListener('pointerdown', onPointerDown)
@@ -138,7 +196,6 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
   return (
     <div className="terminal">
       <AnimatedContent show={show} skip={skip} delay={hintDelay}>
-        {/* Decorative layer — the tabs above are the real navigation. */}
         <p className="terminal-line">
           {armed ? (
             <span aria-hidden="true">
@@ -150,16 +207,16 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
               type="button"
               className="terminal-hint"
               onClick={() => setArmed(true)}
-              aria-label="activate the typing prompt"
+              aria-label="leave a message"
             >
-              &gt; click here to type...
+              &gt; leave me a message…
             </button>
           ) : (
-            ' '
+            ' '
           )}
         </p>
         <p className="terminal-response" aria-live="polite">
-          {response || ' '}
+          {response || (armed ? 'enter to send — add your email if you’d like a reply' : ' ')}
         </p>
       </AnimatedContent>
     </div>
