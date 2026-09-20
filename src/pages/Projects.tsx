@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader'
 import { Link } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import { projects } from '../content'
@@ -5,9 +6,7 @@ import { projects } from '../content'
 export default function Projects() {
   return (
     <main className="page">
-      <Link className="back" to="/">
-        &larr; back
-      </Link>
+      <PageHeader />
 
       <h1 className="page-title">projects</h1>
 

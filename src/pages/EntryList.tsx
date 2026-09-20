@@ -1,3 +1,4 @@
+import PageHeader from '../components/PageHeader'
 import { Link } from 'react-router-dom'
 import type { Entry } from '../content'
 
@@ -16,9 +17,7 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
   if (entries.length === 0 && emptyNote) {
     return (
       <main className="page">
-        <Link className="back" to="/">
-          &larr; back
-        </Link>
+        <PageHeader />
 
         <h1 className="page-title">{heading}</h1>
         <p className="page-note">{emptyNote}</p>
@@ -28,16 +27,25 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
 
   return (
     <main className="page">
-      <Link className="back" to="/">
-        &larr; back
-      </Link>
+      <PageHeader />
 
       <h1 className="page-title">{heading}</h1>
 
       <ul className="entries">
         {entries.map((entry) => (
           <li key={entry.slug}>
-            <Link className="entry" to={`${basePath}/${entry.slug}`}>
+            {basePath === '/work' ? (
+              <Link className="work-entry" to={`${basePath}/${entry.slug}`}>
+                <div className="work-entry-row">
+                  <div>
+                    <h2>{entry.org ?? entry.title}</h2>
+                    <p>{entry.title} · {entry.date}</p>
+                    {entry.summary && <p className="work-entry-result">{entry.summary}</p>}
+                  </div>
+                  {entry.logo && <img className="entry-logo" src={entry.logo} alt="" />}
+                </div>
+              </Link>
+            ) : <Link className="entry" to={`${basePath}/${entry.slug}`}>
               <div className="entry-text">
                 <h2>{entry.title}</h2>
                 {/* Plain text here, never a link: the whole row is already an
@@ -50,7 +58,7 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
               {/* alt="" on purpose — the org name sits right beside it, so
                   announcing it again is noise for a screen reader. */}
               {entry.logo && <img className="entry-logo" src={entry.logo} alt="" loading="lazy" />}
-            </Link>
+            </Link>}
           </li>
         ))}
       </ul>

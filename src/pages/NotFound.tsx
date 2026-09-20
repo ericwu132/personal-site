@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import PageHeader from '../components/PageHeader'
 
 type NotFoundProps = {
   backTo?: string
@@ -8,9 +8,7 @@ type NotFoundProps = {
 export default function NotFound({ backTo = '/', backLabel = 'home' }: NotFoundProps) {
   return (
     <main className="page">
-      <Link className="back" to={backTo}>
-        &larr; {backLabel}
-      </Link>
+      <PageHeader backTo={backTo} backLabel={backLabel} />
       <h1 className="page-title">not found</h1>
       <p className="prose">There's nothing at this address.</p>
     </main>

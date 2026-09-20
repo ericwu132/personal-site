@@ -6,6 +6,7 @@ export type Link = {
 }
 
 export type Project = {
+  devpostUrl?: string
   slug: string
   title: string
   blurb: string
@@ -25,6 +26,7 @@ export type Project = {
  * which notes simply leave off.
  */
 export type Entry = {
+  summary?: string
   slug: string
   title: string
   date: string
@@ -40,6 +42,7 @@ export type Entry = {
 export const projects: Project[] = [
   {
     slug: 'omni-assist',
+    devpostUrl: 'https://devpost.com/software/omni-assist',
     title: 'omni-assist',
     year: 'mar 2026',
     image: '/omniassist.jpg',
@@ -106,7 +109,8 @@ export const notes: Entry[] = []
 export const work: Entry[] = [
   {
     slug: 'spyder-controls',
-    title: 'electromechanical engineer intern',
+    summary: 'pcba test fixtures. over 70% fewer false failures.',
+    title: 'electromechanical engineering intern',
     org: 'spyder controls',
     orgUrl: 'https://www.spydercontrols.com/',
     logo: '/spyder-controls.png',
@@ -120,6 +124,7 @@ export const work: Entry[] = [
   },
   {
     slug: 'watonomous',
+    summary: 'humanoid mechanical design. 6 dof leg contributions and component selection.',
     title: 'humanoid team member',
     org: 'watonomous',
     orgUrl: 'https://www.watonomous.ca/projects/humanoid',

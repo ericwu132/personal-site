@@ -94,6 +94,88 @@ body {
   text-align: center;
 }
 
+.hero-intro {
+  min-width: 0;
+}
+
+.hero-photos {
+  display: grid;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  align-items: center;
+  justify-items: center;
+  gap: 16px;
+  width: min(100%, 360px);
+  margin: 24px auto 0;
+}
+
+.hero-portrait {
+  display: block;
+  width: min(100%, 144px);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+
+.hero-project {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.hero-project img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+
+.hero-project-caption {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.hero-project:hover {
+  color: var(--ink);
+}
+
+.hero-project:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+@media (min-width: 960px) {
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: center;
+    gap: 48px;
+    max-width: 960px;
+  }
+
+  .hero-photos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    width: 280px;
+    margin: 0;
+  }
+
+  .hero-portrait,
+  .hero-project {
+    width: 240px;
+  }
+}
+
 .hero-name {
   font-size: clamp(1.75rem, 7vw, 3rem);
   font-weight: 400;
@@ -265,6 +347,37 @@ body {
 
 /* --------------------------------------------------------------- subpages */
 
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 28px;
+}
+
+.page-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  min-height: 44px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.page-home .signature { width: 120px; height: auto; margin: 0; }
+.page-home-arrow { font-size: 1rem; color: var(--ink-soft); }
+.page-home:hover { opacity: 0.75; }
+.page-header .back { margin: 0; }
+.page-header a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+
+@media (max-width: 599px) {
+  .page-header { margin-bottom: 24px; }
+  .page-home .signature { width: 100px; }
+}
+
 .page {
   max-width: 38rem;
 }
@@ -295,6 +408,13 @@ body {
 }
 
 /* ------------------------------------------------------- project cards */
+
+.project-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin-bottom: clamp(1.25rem, 4vw, 1.75rem); }
+.project-heading .page-title { margin-bottom: 0; }
+.project-devpost { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
+.project-devpost:hover { opacity: 0.75; }
+.project-devpost:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 .cards li + li,
 .entries li + li {
@@ -375,6 +495,25 @@ body {
 }
 
 /* ------------------------------------------------ image slots and prose */
+
+.work-entry { display: block; color: inherit; text-decoration: none; border-top: 1px solid var(--rule); padding: 1.5rem 0 0; }
+.entries li + li .work-entry { border-top: 0; padding-top: 0; }
+.work-entry-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.work-entry h2 { display: inline-block; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }
+.work-entry:hover h2, .work-entry:focus-visible h2 { border-bottom-color: var(--accent); }
+.work-entry p { color: var(--ink-soft); line-height: 1.5; }
+.work-entry .entry-logo { width: 38px; height: 38px; opacity: 1; }
+.work-entry .work-entry-result { margin-top: 0.75rem; color: var(--ink); }
+.work-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.spyder-story-section { padding: 1.5rem 0; }
+.spyder-story-section h2 { font-size: 1.4rem; font-weight: 400; margin: 0.65rem 0 0.85rem; }
+.spyder-story-section p { color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; }
+.spyder-story .wp-photo { min-width: 0; margin: 1.5rem 0 0; }
+.spyder-story .wp-photo-frame { aspect-ratio: 3 / 2; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--rule); background: linear-gradient(145deg, var(--rule), transparent); }
+.spyder-story .wp-photo img { width: 100%; height: 100%; object-fit: cover; }
+.spyder-story .wp-placeholder { display: grid; justify-items: center; gap: 0.8rem; padding: 1.5rem; text-align: center; color: var(--ink-soft); }
+.spyder-story .wp-placeholder small { font-size: 0.75rem; font-style: italic; }
+.spyder-story .wp-photo figcaption { color: var(--ink-soft); font-size: 0.85rem; line-height: 1.5; margin-top: 0.65rem; }
 
 /* Holds the exact space a photo will occupy, so dropping real files in
    later doesn't shift anything around them. */
@@ -472,6 +611,55 @@ body {
 }
 
 /* ---------------------------------------------------------------- footer */
+
+.about-collage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(8px, 2vw, 14px);
+  margin: 2.5rem 0 1rem;
+  padding: 0 4px;
+}
+
+.about-collage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+.about-collage img:first-child { transform: rotate(-2deg); }
+.about-collage img:nth-child(2) { margin-top: 24px; transform: rotate(1deg); }
+.about-collage img:last-child { margin-top: 8px; transform: rotate(-1deg); }
+
+.journal-intro, .about-intro { font-size: 1.2rem; line-height: 1.6; color: var(--ink-soft); max-width: 36rem; }
+.journal-section, .about-section { margin-top: 2.5rem; }
+.journal-section > h2, .about-section h2 { font-size: 1.25rem; font-weight: 400; margin-bottom: 0.85rem; }
+.journal-empty { padding: 1.25rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: var(--ink-soft); line-height: 1.6; font-style: italic; }
+.journal-context { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.note-ideas { list-style: none; padding: 0; margin: 0; }
+.note-ideas li { padding: 1.25rem 0; border-top: 1px solid var(--rule); }
+.journal-kicker { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+.note-ideas h3 { font-size: 1.15rem; font-weight: 400; margin: 0.5rem 0; }
+.note-ideas p, .about-section p { color: var(--ink-soft); line-height: 1.7; font-size: 1.05rem; }
+.about-page { max-width: 48rem; }
+.about-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0 3rem; }
+.about-photos figure { margin: 0; min-width: 0; }
+.about-photo-frame { aspect-ratio: 4 / 5; background: var(--rule); border: 1px solid var(--rule); overflow: hidden; display: grid; place-items: center; }
+.about-photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.about-photos figure:first-child img { object-fit: contain; }
+.about-photo-placeholder { padding: 1rem; color: var(--ink-soft); text-align: center; line-height: 1.5; }
+.about-photo-placeholder small { display: block; font-size: 0.75rem; font-style: italic; margin-top: 0.75rem; }
+.about-photos figcaption { margin-top: 0.65rem; color: var(--ink-soft); font-size: 0.85rem; line-height: 1.4; }
+.about-section { max-width: 38rem; }
+.about-section p + p { margin-top: 1rem; }
+.about-section > .text-link { display: inline-block; margin-top: 1rem; }
+@media (max-width: 480px) {
+  .about-photos { gap: 0.5rem; }
+  .about-photo-placeholder { padding: 0.4rem; font-size: 0.75rem; }
+  .about-photo-placeholder small { font-size: 0.65rem; }
+  .about-photos figcaption { font-size: 0.75rem; }
+}
 
 /* .route carries flex: 1, so this settles at the bottom on short and tall
    pages alike; #root's padding is the gap beneath it. */
@@ -585,9 +773,13 @@ body {
   color-scheme: light;
 }
 
-/* The webring artwork is white, so it needs flipping on a light ground. */
+/* The webring art and both company logos are white monochrome silhouettes,
+   which suit the olive ground as-is but vanish on a light one. Verified
+   monochrome (zero coloured pixels), so inverting loses nothing.
+   A colour logo added later must be exempted from this rule. */
 :root[data-theme='cream'] .ring-arrow,
-:root[data-theme='cream'] .ring-mark {
+:root[data-theme='cream'] .ring-mark,
+:root[data-theme='cream'] .entry-logo {
   filter: invert(1);
 }
 

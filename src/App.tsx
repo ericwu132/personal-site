@@ -6,6 +6,7 @@ import ProjectDetail from './pages/ProjectDetail'
 import EntryList from './pages/EntryList'
 import EntryDetail from './pages/EntryDetail'
 import About from './pages/About'
+import Notes from './pages/Notes'
 import NotFound from './pages/NotFound'
 import SiteFooter from './components/SiteFooter'
 import { notes, work } from './content'
@@ -52,17 +53,7 @@ export default function App() {
             path="/work/:slug"
             element={<EntryDetail heading="work" basePath="/work" entries={work} />}
           />
-          <Route
-            path="/notes"
-            element={
-              <EntryList
-                heading="notes"
-                basePath="/notes"
-                entries={notes}
-                emptyNote="work in progress! i’m working hard to get these pushed out."
-              />
-            }
-          />
+          <Route path="/notes" element={<Notes />} />
           <Route
             path="/notes/:slug"
             element={<EntryDetail heading="notes" basePath="/notes" entries={notes} />}
