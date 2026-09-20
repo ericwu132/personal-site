@@ -6,6 +6,7 @@ export type Link = {
 }
 
 export type Project = {
+  category: 'electromechanical' | 'software'
   devpostUrl?: string
   slug: string
   title: string
@@ -17,7 +18,7 @@ export type Project = {
   video?: string
   /** Collaborators, write-ups, repos — anything worth linking beside the prose. */
   links?: Link[]
-  body: string[]
+  body: (string | (string | Link)[])[]
 }
 
 /**
@@ -42,6 +43,7 @@ export type Entry = {
 export const projects: Project[] = [
   {
     slug: 'omni-assist',
+    category: 'electromechanical',
     devpostUrl: 'https://devpost.com/software/omni-assist',
     title: 'omni-assist',
     year: 'mar 2026',
@@ -55,6 +57,7 @@ export const projects: Project[] = [
   
   {
     slug: 'autonomous-self-driving-robot',
+    category: 'software',
     title: 'autonomous self driving robot',
     year: 'jan 2026',
     // Still for the list view; the detail page shows the video instead.
@@ -70,18 +73,21 @@ export const projects: Project[] = [
   },
   {
     slug: 'waterloowash',
+    category: 'software',
+    devpostUrl: 'https://devpost.com/software/waterloowash',
     title: 'waterloowash',
     year: 'dec 2025',
     image: '/waterloowash.png',
     blurb: 'a free website that makes doing the laundry at waterloo easier. 1st place @ figma hackathon',
-    links: [{ label: 'ryan', href: 'https://wangdynasty.ca' }],
     body: [
-      "We (Eric and Ryan) have had some crazy issues using laundry spaces in Waterloo. From flooded washers to waiting for over an hour for a free dryer at 3 AM, we've experienced it all. Because of this trauma, we really wanted to make an app that solves our issues. Doing laundry is such a mundane, boring, and oftentimes a time-wasting task, especially for first years. With our app, we gamified the chore of laundry, turning it into an interactive, community-based platform to improve communication, and most importantly save time.",
+      ["We (Eric and ", { label: 'Ryan', href: 'https://wangdynasty.ca' }, ") have had some crazy issues using laundry spaces in Waterloo. From flooded washers to waiting for over an hour for a free dryer at 3 AM, we've experienced it all. Because of this trauma, we really wanted to make an app that solves our issues. Doing laundry is such a mundane, boring, and oftentimes a time-wasting task, especially for first years. With our app, we gamified the chore of laundry, turning it into an interactive, community-based platform to improve communication, and most importantly save time."],
       'This app, WaterlooWash, was created using Figma and Figma Make. Full app implementation coming soon.',
     ],
   },
   {
     slug: 'arduino-arcade-machine',
+    category: 'electromechanical',
+    devpostUrl: 'https://devpost.com/software/skee-bidi',
     title: 'arduino arcade machine',
     year: 'nov 2025',
     image: '/boxbots.jpg',
@@ -93,6 +99,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'star-wars-droid',
+    category: 'electromechanical',
     title: 'star wars droid',
     year: 'tbd',
     image: '/robotphoto.jpg',

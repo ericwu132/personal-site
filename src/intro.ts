@@ -55,7 +55,7 @@ function pick(): string {
 export const greeting = pick()
 
 /**
- * Whether the intro has already played this page load. Same reasoning as
+ * Whether the landing page has been visited this page load. Same reasoning as
  * above — coming back from /projects shouldn't replay the typing, but a
  * reload should.
  */

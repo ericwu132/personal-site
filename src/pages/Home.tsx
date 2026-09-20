@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TextType from '../components/TextType'
 import AnimatedContent from '../components/AnimatedContent'
@@ -25,6 +25,11 @@ export default function Home() {
   // visitor comes back here from another route.
   const [skip] = useState(introSeen)
 
+  // Remember the visit even if navigation interrupts the intro animation.
+  useEffect(() => {
+    markIntroSeen()
+  }, [])
+
   // Only the signature still waits on the greeting; everything else is
   // independent and animates on mount.
   const [typed, setTyped] = useState(skip)
@@ -40,7 +45,6 @@ export default function Home() {
           show={typed}
           skip={skip}
           durationMs={SIGNATURE_MS}
-          onComplete={markIntroSeen}
         />
 
         <AnimatedContent show skip={skip} delay={SUBTEXT_DELAY}>

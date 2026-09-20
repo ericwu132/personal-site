@@ -39,7 +39,13 @@ export default function ProjectDetail() {
       <div className="prose">
         <p className="lede">{project.blurb}</p>
         {project.body.map((paragraph, i) => (
-          <p key={i}>{paragraph}</p>
+          <p key={i}>
+            {typeof paragraph === 'string' ? paragraph : paragraph.map((part, j) => (
+              typeof part === 'string' ? part : (
+                <a key={j} className="text-link" href={part.href} target="_blank" rel="noreferrer">{part.label}</a>
+              )
+            ))}
+          </p>
         ))}
 
         {project.links && project.links.length > 0 && (
