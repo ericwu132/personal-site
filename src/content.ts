@@ -37,7 +37,7 @@ export type Entry = {
   orgUrl?: string
   /** Org logo, a path under public/ — shown at the right of the list row. */
   logo?: string
-  body: string[]
+  body: (string | (string | Link)[])[]
 }
 
 export const projects: Project[] = [
@@ -108,9 +108,24 @@ export const projects: Project[] = [
   },
 ]
 
-/** Nothing published yet — /notes shows its work-in-progress note while
-    this is empty. See `work` below for the shape of an entry. */
-export const notes: Entry[] = []
+/** Personal notes and reading lists. */
+export const notes: Entry[] = [
+  {
+    slug: 'short-stories-i-found-interesting',
+    title: 'short stories i found interesting',
+    date: 'sep 2026',
+    body: [
+      [
+        { label: 'the egg', href: 'https://www.galactanet.com/oneoff/theegg.html' },
+        ' by andy weir',
+      ],
+      [
+        { label: 'the last question', href: 'https://users.ece.cmu.edu/~gamvrosi/thelastq.html' },
+        ' by isaac asimov',
+      ],
+    ],
+  },
+]
 
 /** Placeholder — real roles and case studies to come. */
 export const work: Entry[] = [

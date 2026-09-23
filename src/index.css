@@ -79,11 +79,16 @@ body {
   opacity: 0;
 }
 
-/* Auto margins rather than justify-content, so content taller than the
-   viewport scrolls instead of having its top edge clipped. */
-.hero,
-.page {
+/* Keep the home hero centered, but give every subpage the same top edge.
+   Previously short pages (like Notes) were vertically centered lower than
+   longer pages, so their headings shifted depending on content height. */
+.hero {
   margin: auto;
+  width: 100%;
+}
+
+.page {
+  margin: clamp(1rem, 5vh, 3rem) auto auto;
   width: 100%;
 }
 
