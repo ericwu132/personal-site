@@ -123,6 +123,10 @@ export const notes: Entry[] = [
         { label: 'the last question', href: 'https://users.ece.cmu.edu/~gamvrosi/thelastq.html' },
         ' by isaac asimov',
       ],
+      [
+        { label: 'three days of happiness', href: 'https://vgperson.com/other/mangaviewer.php?m=3' },
+        ' by sugaru miaki (much longer, but 100% worth the read)',
+      ],
     ],
   },
 ]

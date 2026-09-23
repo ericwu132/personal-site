@@ -56,7 +56,7 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
             {typeof paragraph === 'string' ? paragraph : paragraph.map((part, j) =>
               typeof part === 'string' ? part : (
                 <a key={j} className="text-link" href={part.href} target="_blank" rel="noreferrer">
-                  {part.label}
+                  <strong>{part.label}</strong>
                 </a>
               )
             )}
