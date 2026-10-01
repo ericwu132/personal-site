@@ -3,7 +3,7 @@ import type { Photo } from '../spyderStory'
 export function PhotoSlot({ photo, compact = false }: { photo: Photo; compact?: boolean }) {
   return (
     <figure className={`wp-photo${compact ? ' wp-photo--compact' : ''}`}>
-      <div className="wp-photo-frame">
+      <div className={`wp-photo-frame${photo.rotateCCW ? ' wp-photo-frame--rotate-ccw' : ''}`}>
         {photo.src ? <img src={photo.src} alt={photo.alt ?? photo.label} loading="lazy" /> : (
           <div className="wp-placeholder">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" aria-hidden="true">
@@ -20,4 +20,3 @@ export function PhotoSlot({ photo, compact = false }: { photo: Photo; compact?: 
     </figure>
   )
 }
-

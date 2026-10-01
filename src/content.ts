@@ -37,6 +37,12 @@ export type Entry = {
   orgUrl?: string
   /** Org logo, a path under public/ — shown at the right of the list row. */
   logo?: string
+  logoStyle?: 'shield' | 'uwfe'
+  photoGroups?: {
+    afterParagraph: number
+    heading?: string
+    photos: { src: string; alt: string; caption: string; width: number; height: number }[]
+  }[]
   body: (string | (string | Link)[])[]
 }
 
@@ -131,8 +137,22 @@ export const notes: Entry[] = [
   },
 ]
 
-/** Placeholder — real roles and case studies to come. */
+/** Work experience and engineering teams. */
 export const work: Entry[] = [
+  {
+    slug: 'undergraduate-researcher',
+    summary: 'developing a pressure-sensing judo mat to measure contact location and relative force.',
+    title: 'undergraduate researcher',
+    org: 'university of waterloo',
+    logo: '/waterloo-shield.svg',
+    logoStyle: 'shield',
+    date: 'sep 2026 - present',
+    body: [
+      "i'm developing a pressure-sensing judo mat to measure contact location and relative force during throws. the sensor data will complement multi-camera pose estimation to connect body movement with contact on the mat.",
+      "my focus is the sensing electronics: a velostat sensor array and a custom pcb i'm designing in altium. the board uses a microcontroller, multiplexers, an adc, and signal-conditioning circuitry to scan and read the array.",
+      "i'm starting with a 2 by 2 m prototype, targeting foot-level pressure resolution. the modular design is intended to scale to a full 10 by 10 m mat.",
+    ],
+  },
   {
     slug: 'spyder-controls',
     summary: 'pcba test fixtures. over 70% fewer false failures.',
@@ -159,6 +179,39 @@ export const work: Entry[] = [
     body: [
       'currently on the mechanical subteam for the humanoid. made contributions to the 6 DOF leg and was responsible for sourcing, researching and evaluating parts for design decisions',
       
+    ],
+  },
+  {
+    slug: 'waterloo-formula-electric',
+    summary: 'designing and machining suspension parts for our electric race car.',
+    title: 'suspension engineer',
+    org: 'university of waterloo formula electric',
+    logo: '/uwfe-icon.png',
+    logoStyle: 'uwfe',
+    date: 'sep 2025 - may 2026',
+    photoGroups: [
+      {
+        afterParagraph: 0,
+        photos: [
+          { src: '/uwfe-potentiometer-mount.webp', alt: 'Grey 3D-printed potentiometer mount attached to the purple roll damper assembly.', caption: 'the redesigned potentiometer mount on the roll damper assembly.', width: 1215, height: 1620 },
+        ],
+      },
+      {
+        afterParagraph: 2,
+        heading: 'in the machine shop',
+        photos: [
+          { src: '/uwfe-plate.webp', alt: 'Machined aluminium plate with six countersunk holes.', caption: 'aluminium plate with countersunk mounting holes.', width: 2880, height: 2160 },
+          { src: '/uwfe-bracket.png', alt: 'Machined aluminium L-bracket with holes in both faces.', caption: 'an aluminium l-bracket after machining.', width: 688, height: 550 },
+          { src: '/uwfe-lathe.webp', alt: 'Cylindrical workpiece held in a lathe chuck with a dial indicator against its surface.', caption: 'checking a workpiece on the lathe with a dial indicator.', width: 1215, height: 1620 },
+          { src: '/uwfe-small-parts.png', alt: 'Small machined metal components held in a hand.', caption: 'a few of the smaller machined parts.', width: 358, height: 274 },
+          { src: '/uwfe-drilling.png', alt: 'Drill bit aligned with a small workpiece held in the lathe chuck.', caption: 'a drilling setup on the manual lathe.', width: 517, height: 499 },
+        ],
+      },
+    ],
+    body: [
+      "i worked on suspension components for waterloo's electric formula sae car. i redesigned the roll damper's 3d-printed potentiometer mount in solidworks to increase stiffness and improve measurement accuracy during calibration.",
+      'i machined over 20 aluminium and steel components on manual mills and lathes, including spacers, plugs, top hats, plates, and l-brackets. the work involved drilling, reaming, tapping, and countersinking.',
+      'i checked dimensions with calipers and micrometers, meeting tolerances as tight as ±0.05 mm.',
     ],
   },
 ]

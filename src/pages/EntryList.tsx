@@ -38,11 +38,15 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
               <Link className="work-entry" to={`${basePath}/${entry.slug}`}>
                 <div className="work-entry-row">
                   <div>
-                    <h2>{entry.org ?? entry.title}</h2>
-                    <p>{entry.title} · {entry.date}</p>
+                    <h2>{entry.title}</h2>
+                    <p>{entry.org ? `${entry.org} · ` : ''}{entry.date}</p>
                     {entry.summary && <p className="work-entry-result">{entry.summary}</p>}
                   </div>
-                  {entry.logo && <img className="entry-logo" src={entry.logo} alt="" />}
+                  {entry.logo && (
+                    <span className={`work-logo${entry.logoStyle ? ` work-logo--${entry.logoStyle}` : ''}`}>
+                      <img className="entry-logo" src={entry.logo} alt="" />
+                    </span>
+                  )}
                 </div>
               </Link>
             ) : <Link className="entry" to={`${basePath}/${entry.slug}`}>

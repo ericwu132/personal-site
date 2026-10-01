@@ -516,17 +516,38 @@ body {
 .work-entry:hover h2, .work-entry:focus-visible h2 { border-bottom-color: var(--accent); }
 .work-entry p { color: var(--ink-soft); line-height: 1.5; }
 .work-entry .entry-logo { width: 38px; height: 38px; opacity: 1; }
+.work-logo { display: flex; flex: 0 0 38px; width: 38px; height: 38px; }
+/* Preserve the transparent colour shield; keep UWFE monochrome. */
+.work-logo--shield .entry-logo { filter: none; }
+.work-logo--uwfe .entry-logo { filter: brightness(0) invert(1); }
+:root[data-theme='cream'] .work-logo--shield .entry-logo { filter: none; }
+:root[data-theme='cream'] .work-logo--uwfe .entry-logo { filter: brightness(0); }
 .work-entry .work-entry-result { margin-top: 0.75rem; color: var(--ink); }
 .work-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .spyder-story-section { padding: 1.5rem 0; }
 .spyder-story-section h2 { font-size: 1.4rem; font-weight: 400; margin: 0.65rem 0 0.85rem; }
 .spyder-story-section p { color: var(--ink-soft); font-size: 1.05rem; line-height: 1.7; }
 .spyder-story .wp-photo { min-width: 0; margin: 1.5rem 0 0; }
-.spyder-story .wp-photo-frame { aspect-ratio: 3 / 2; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--rule); background: linear-gradient(145deg, var(--rule), transparent); }
-.spyder-story .wp-photo img { width: 100%; height: 100%; object-fit: cover; }
+.spyder-story .wp-photo-frame { position: relative; aspect-ratio: 4 / 3; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--rule); background: linear-gradient(145deg, var(--rule), transparent); }
+.spyder-story .wp-photo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* Swap the portrait image's dimensions before rotating, preserving the full photo. */
+.spyder-story .wp-photo-frame--rotate-ccw img { position: absolute; top: 50%; left: 50%; width: 75%; height: 133.333333%; max-width: none; transform: translate(-50%, -50%) rotate(-90deg); }
 .spyder-story .wp-placeholder { display: grid; justify-items: center; gap: 0.8rem; padding: 1.5rem; text-align: center; color: var(--ink-soft); }
 .spyder-story .wp-placeholder small { font-size: 0.75rem; font-style: italic; }
 .spyder-story .wp-photo figcaption { color: var(--ink-soft); font-size: 0.85rem; line-height: 1.5; margin-top: 0.65rem; }
+
+.entry-photo-group { margin: 2rem 0 2.5rem; }
+.entry-photo-group h2 { font-size: 1.4rem; font-weight: 400; margin-bottom: 1.25rem; }
+.entry-gallery { columns: 2; column-gap: 1.25rem; }
+.entry-gallery figure { margin: 0 0 1.5rem; break-inside: avoid; }
+.entry-gallery a { display: block; }
+.entry-gallery img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.entry-gallery a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.entry-gallery figcaption { margin-top: 0.65rem; color: var(--ink-soft); font-size: 0.85rem; line-height: 1.5; }
+.entry-gallery--single { columns: 1; max-width: 390px; margin-inline: auto; }
+@media (max-width: 480px) {
+  .entry-gallery { columns: 1; }
+}
 
 /* Holds the exact space a photo will occupy, so dropping real files in
    later doesn't shift anything around them. */

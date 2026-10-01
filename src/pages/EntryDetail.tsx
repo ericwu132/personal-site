@@ -1,4 +1,5 @@
 import PageHeader from '../components/PageHeader'
+import { Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 import type { Entry } from '../content'
 import NotFound from './NotFound'
@@ -52,7 +53,8 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
         </div>
       ) : <div className="prose">
         {entry.body.map((paragraph, i) => (
-          <p key={i}>
+          <Fragment key={i}>
+          <p>
             {typeof paragraph === 'string' ? paragraph : paragraph.map((part, j) =>
               typeof part === 'string' ? part : (
                 <a key={j} className="text-link" href={part.href} target="_blank" rel="noreferrer">
@@ -61,6 +63,22 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
               )
             )}
           </p>
+          {entry.photoGroups?.filter((group) => group.afterParagraph === i).map((group) => (
+            <div className="entry-photo-group" key={group.afterParagraph}>
+              {group.heading && <h2>{group.heading}</h2>}
+              <div className={`entry-gallery${group.photos.length === 1 ? ' entry-gallery--single' : ''}`}>
+                {group.photos.map((photo) => (
+                  <figure key={photo.src}>
+                    <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.caption}`}>
+                      <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
+                    </a>
+                    <figcaption>{photo.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ))}
+          </Fragment>
         ))}
       </div>}
     </main>
