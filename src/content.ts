@@ -131,7 +131,7 @@ export const projects: Project[] = [
     photoGroups: [
       { afterParagraph: 0, photos: [
         { src: '/vex-worlds-climb.gif', alt: 'The Worlds robot lifting itself onto the bar with its winch climbing mechanism.', caption: 'our worlds robot climbing mechanism in action!', width: 400, height: 225 },
-        { src: '/vex-worlds-robot.webp', alt: 'Team 3388C Worlds robot with its metal frame, blue team panels, and climbing mechanism.', caption: 'our worlds robot.', width: 1792, height: 2400, cropBottom: 288 },
+        { src: '/vex-worlds-robot.webp', alt: 'Team 3388C Worlds robot with its metal frame, blue team panels, and climbing mechanism.', caption: 'our worlds robot.', width: 1792, height: 2112 },
         { src: '/vex-robot.webp', alt: 'CAD rendering of the VEX competition robot.', caption: 'the provincial robot, designed in fusion 360 with custom laser-cut parts.', width: 1961, height: 1063 },
         { src: '/vex-odometry.webp', alt: 'CAD design of the first iteration of the odometry pods.', caption: 'the first iteration of our odometry pods!', width: 985, height: 937 },
         { src: '/vex-drivetrain.webp', alt: 'CAD overview of the custom laser-cut robot parts.', caption: 'an overview of all the laser-cut parts i designed.', width: 660, height: 1147 },
