@@ -7,6 +7,7 @@ export type Link = {
 
 export type Project = {
   category: 'electromechanical' | 'software'
+  photoGroups?: Entry['photoGroups']
   devpostUrl?: string
   slug: string
   title: string
@@ -41,12 +42,24 @@ export type Entry = {
   photoGroups?: {
     afterParagraph: number
     heading?: string
-    photos: { src: string; alt: string; caption: string; width: number; height: number }[]
+    photos: { src: string; alt: string; caption: string; width: number; height: number; cropBottom?: number }[]
   }[]
   body: (string | (string | Link)[])[]
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'smart-tatami',
+    category: 'electromechanical',
+    title: 'smart tatami',
+    year: 'sep 2026 - present',
+    blurb: 'a pressure-sensing judo mat. undergraduate research @ university of waterloo',
+    body: [
+      "i'm developing a pressure-sensing judo mat to measure contact location and relative force during throws. the sensor data will complement multi-camera pose estimation to connect body movement with contact on the mat.",
+      "my focus is the sensing electronics: a velostat sensor array and a custom pcb i'm designing in altium. the board uses a microcontroller, multiplexers, an adc, and signal-conditioning circuitry to scan and read the array.",
+      "i'm starting with a 2 by 2 m prototype, targeting foot-level pressure resolution. the modular design is intended to scale to a full 10 by 10 m mat.",
+    ],
+  },
   {
     slug: 'omni-assist',
     category: 'electromechanical',
@@ -104,13 +117,26 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'star-wars-droid',
+    slug: 'vex-robotics',
+    blurb: 'robot CAD and mechanical design. provincial champions and worlds competitors in 2024.',
+    title: 'vex robotics',
     category: 'electromechanical',
-    title: 'star wars droid',
-    year: 'tbd',
-    image: '/robotphoto.jpg',
-    blurb: 'Coming soon.',
-    body: [],
+    image: '/vex-robot.webp',
+    year: 'high school',
+    body: [
+      'i competed in high school V5RC in alberta with team 3388c, where i was responsible for CAD and robot design. we won provincials and attended worlds in 2024.',
+      'i learned fusion 360 from the ground up and designed custom laser-cut parts to solve our robot\'s mechanical design challenges. our worlds robot used a winch mechanism to pull itself onto the bar for extra points.',
+      'i also designed x-y odometry pods for a thin drivetrain with very little free space. i iterated on the design dozens of times to fit the pods around the drive motors and each other.',
+    ],
+    photoGroups: [
+      { afterParagraph: 0, photos: [
+        { src: '/vex-worlds-climb.gif', alt: 'The Worlds robot lifting itself onto the bar with its winch climbing mechanism.', caption: 'our worlds robot climbing mechanism in action!', width: 400, height: 225 },
+        { src: '/vex-worlds-robot.webp', alt: 'Team 3388C Worlds robot with its metal frame, blue team panels, and climbing mechanism.', caption: 'our worlds robot.', width: 1792, height: 2400, cropBottom: 288 },
+        { src: '/vex-robot.webp', alt: 'CAD rendering of the VEX competition robot.', caption: 'the provincial robot, designed in fusion 360 with custom laser-cut parts.', width: 1961, height: 1063 },
+        { src: '/vex-odometry.webp', alt: 'CAD design of the first iteration of the odometry pods.', caption: 'the first iteration of our odometry pods!', width: 985, height: 937 },
+        { src: '/vex-drivetrain.webp', alt: 'CAD overview of the custom laser-cut robot parts.', caption: 'an overview of all the laser-cut parts i designed.', width: 660, height: 1147 },
+      ] },
+    ],
   },
 ]
 
@@ -131,7 +157,11 @@ export const notes: Entry[] = [
       ],
       [
         { label: 'three days of happiness', href: 'https://vgperson.com/other/mangaviewer.php?m=3' },
-        ' by sugaru miaki (much longer, but 100% worth the read)',
+        ' by sugaru miaki (longer, but 100% worth the read)',
+      ],
+      [
+        { label: 'the end poem', href: 'https://www.theendpoem.com/' },
+        ' by julian gough',
       ],
     ],
   },
@@ -214,6 +244,7 @@ export const work: Entry[] = [
       'i checked dimensions with calipers and micrometers, meeting tolerances as tight as ±0.05 mm.',
     ],
   },
+
 ]
 
 export const findProject = (slug?: string) => projects.find((p) => p.slug === slug)

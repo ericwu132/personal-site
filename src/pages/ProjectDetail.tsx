@@ -30,11 +30,11 @@ export default function ProjectDetail() {
       )}
       </div>
 
-      {project.video ? (
+      {!project.photoGroups?.length && (project.video ? (
         <Embed src={project.video} title={project.title} />
       ) : (
         <Thumb src={project.image} alt={project.title} ratio="3 / 2" />
-      )}
+      ))}
 
       <div className="prose">
         <p className="lede">{project.blurb}</p>
@@ -59,6 +59,23 @@ export default function ProjectDetail() {
             ))}
           </ul>
         )}
+          {project.photoGroups?.map((group) => (
+            <div className="entry-photo-group project-photo-group" key={group.afterParagraph}>
+              {group.heading && <h2>{group.heading}</h2>}
+              <div className={`entry-gallery project-gallery${group.photos.length === 1 ? ' entry-gallery--single' : ''}`}>
+                {group.photos.map((photo) => (
+                  <figure key={photo.src}>
+                    <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.caption}`}>
+                      <span style={{ display: 'block', overflow: 'hidden', borderRadius: 3, aspectRatio: photo.cropBottom ? `${photo.width} / ${photo.height - photo.cropBottom}` : undefined }}>
+                        <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
+                      </span>
+                    </a>
+                    <figcaption>{photo.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
     </main>
   )

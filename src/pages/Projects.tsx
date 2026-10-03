@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import { projects } from '../content'
 
-const filters = ['all', 'electromechanical', 'software'] as const
+const filters = ['electromechanical', 'software'] as const
 
 export default function Projects() {
-  const [filter, setFilter] = useState<(typeof filters)[number]>('all')
-  const visibleProjects = projects.filter((project) => filter === 'all' || project.category === filter)
+  const [filter, setFilter] = useState<(typeof filters)[number]>('electromechanical')
+  const visibleProjects = projects.filter((project) => project.category === filter)
   return (
     <main className="page">
       <PageHeader />
