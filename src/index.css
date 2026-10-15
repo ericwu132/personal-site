@@ -548,8 +548,13 @@ body {
 .project-photo-group { width: 100%; }
 .project-gallery { columns: 2; column-gap: 1.5rem; }
 .project-gallery figure { margin-bottom: 1.5rem; }
+.project-gallery--fixed-columns figure:nth-child(5) { break-before: column; }
+.project-gallery--two-over-one { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.project-gallery--two-over-one figure { margin: 0; min-width: 0; }
+.project-gallery--two-over-one figure:last-child { grid-column: 1 / -1; }
 @media (max-width: 480px) {
   .entry-gallery { columns: 1; }
+  .project-gallery--fixed-columns figure:nth-child(5) { break-before: auto; }
 }
 
 /* Holds the exact space a photo will occupy, so dropping real files in

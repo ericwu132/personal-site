@@ -41,8 +41,9 @@ export type Entry = {
   logoStyle?: 'shield' | 'uwfe'
   photoGroups?: {
     afterParagraph: number
+    layout?: 'two-over-one' | 'fixed-columns'
     heading?: string
-    photos: { src: string; alt: string; caption: string; width: number; height: number; cropBottom?: number }[]
+    photos: { src: string; alt: string; caption: string; width: number; height: number; cropBottom?: number; maxWidth?: number }[]
   }[]
   body: (string | (string | Link)[])[]
 }
@@ -67,6 +68,13 @@ export const projects: Project[] = [
     title: 'omni-assist',
     year: 'mar 2026',
     image: '/omniassist.jpg',
+    photoGroups: [
+      { afterParagraph: 0, layout: 'two-over-one', photos: [
+        { src: '/omni-assist-demo.gif', alt: 'Close-up of the Omni Assist ratcheting clamp attached to a chair frame.', caption: 'omni-assist\'s ratcheting clamps!', width: 480, height: 270 },
+        { src: '/omni-assist-build.gif', alt: 'A chair fitted with the Omni Assist motorized attachment moving across the room.', caption: 'omni-assist\'s mecanum drive in action!', width: 480, height: 270 },
+        { src: '/omniassist.jpg', alt: 'The Omni Assist wheelchair attachment.', caption: '', width: 1024, height: 778 },
+      ] },
+    ],
     blurb: 'a device that makes any chair autonomous. 1st in hardware & best use of viam @ YHack',
     body: [
       'built an autonomous navigation attachment that locks onto any standard wheelchair and drives it to spoken destinations like "take me to the door." The system ran three concurrent loops: a voice loop parsing speech into goal coordinates through ElevenLabs and an Anthropic LLM, a 10–20 Hz planning loop combining A* global planning with DWA + potential-field local control over a 4-layer spatial memory (LiDAR occupancy, ORB-feature landmarks, dynamic obstacle priors, learned traversal cost), and a 50–100 Hz motor loop on an Arduino Mega. The attachment clamps onto the wheelchair frame via a friction-drive mechanism, so the chair still works manually at any time.',
@@ -110,6 +118,13 @@ export const projects: Project[] = [
     title: 'arduino arcade machine',
     year: 'nov 2025',
     image: '/boxbots.jpg',
+    photoGroups: [
+      { afterParagraph: 0, layout: 'two-over-one', photos: [
+        { src: '/arcade-wiring.jpg', alt: 'Arduino boards, breadboards, motor drivers, and an ultrasonic sensor wired together on a work table.', caption: 'wiring and testing the arduinos.', width: 900, height: 1200 },
+        { src: '/arcade-electronics.jpg', alt: 'Arduino controllers and wiring installed inside the cardboard arcade machine.', caption: 'the electronics inside the machine.', width: 1200, height: 900 },
+        { src: '/boxbots.jpg', alt: 'The completed cardboard skee-ball arcade machine.', caption: '', width: 1200, height: 1600, maxWidth: 260 },
+      ] },
+    ],
     blurb: 'a skee-ball machine made with scrap cardboard and 3d printed parts. 1st in game track @ boxbots hackathon',
     body: [
       'Won the Best Game award at the BoxBots hackathon, which was actually my very first hackathon! My team and I built Skee-bidi, an arcade-style skee-ball machine created purely out of cardboard. Our fully automated design featured three Arduino microcontrollers communicating over I²C, enabling synchronized data transfer between the sensors, the timer, and the scorekeeping displays. For ball detection, we integrated both infrared and ultrasonic sensors.',
@@ -129,11 +144,13 @@ export const projects: Project[] = [
       'i also designed x-y odometry pods for a thin drivetrain with very little free space. i iterated on the design dozens of times to fit the pods around the drive motors and each other.',
     ],
     photoGroups: [
-      { afterParagraph: 0, photos: [
+      { afterParagraph: 0, layout: 'fixed-columns', photos: [
         { src: '/vex-worlds-climb.gif', alt: 'The Worlds robot lifting itself onto the bar with its winch climbing mechanism.', caption: 'our worlds robot climbing mechanism in action!', width: 400, height: 225 },
+        { src: '/vex-solo-awp.gif', alt: 'Our VEX robot running a solo autonomous win point routine on the practice field.', caption: 'our solo autonomous win point routine.', width: 480, height: 360 },
+        { src: '/vex-odometry.webp', alt: 'CAD design of the first iteration of the odometry pods.', caption: 'the first iteration of our odometry pods!', width: 985, height: 937 },
+        { src: '/vex-odometry-installed.png', alt: 'Underside CAD view showing the odometry pods fitted between the drivetrain motors.', caption: 'bottom view of our provincial robot', width: 1104, height: 1273 },
         { src: '/vex-worlds-robot.webp', alt: 'Team 3388C Worlds robot with its metal frame, blue team panels, and climbing mechanism.', caption: 'our worlds robot.', width: 1792, height: 2112 },
         { src: '/vex-robot.webp', alt: 'CAD rendering of the VEX competition robot.', caption: 'the provincial robot, designed in fusion 360 with custom laser-cut parts.', width: 1961, height: 1063 },
-        { src: '/vex-odometry.webp', alt: 'CAD design of the first iteration of the odometry pods.', caption: 'the first iteration of our odometry pods!', width: 985, height: 937 },
         { src: '/vex-drivetrain.webp', alt: 'CAD overview of the custom laser-cut robot parts.', caption: 'an overview of all the laser-cut parts i designed.', width: 660, height: 1147 },
       ] },
     ],
