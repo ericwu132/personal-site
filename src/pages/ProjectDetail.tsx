@@ -2,6 +2,7 @@ import PageHeader from '../components/PageHeader'
 import { useParams } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import Embed from '../components/Embed'
+import ProjectPhotos from '../components/ProjectPhotos'
 import { findProject } from '../content'
 import NotFound from './NotFound'
 
@@ -59,23 +60,7 @@ export default function ProjectDetail() {
             ))}
           </ul>
         )}
-          {project.photoGroups?.map((group) => (
-            <div className="entry-photo-group project-photo-group" key={group.afterParagraph}>
-              {group.heading && <h2>{group.heading}</h2>}
-              <div className={`entry-gallery project-gallery${group.photos.length === 1 ? ' entry-gallery--single' : ''}${group.layout ? ` project-gallery--${group.layout}` : ''}`}>
-                {group.photos.map((photo) => (
-                  <figure key={photo.src} style={photo.maxWidth ? { maxWidth: photo.maxWidth, width: '100%', marginInline: 'auto' } : undefined}>
-                    <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.caption}`}>
-                      <span style={{ display: 'block', overflow: 'hidden', borderRadius: 3, aspectRatio: photo.cropBottom ? `${photo.width} / ${photo.height - photo.cropBottom}` : undefined }}>
-                        <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
-                      </span>
-                    </a>
-                    <figcaption>{photo.caption}</figcaption>
-                  </figure>
-                ))}
-              </div>
-            </div>
-          ))}
+        {project.photoGroups && <ProjectPhotos groups={project.photoGroups} />}
       </div>
     </main>
   )

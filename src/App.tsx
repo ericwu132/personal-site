@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
+import Portfolio from './pages/Portfolio'
 import ProjectDetail from './pages/ProjectDetail'
 import EntryList from './pages/EntryList'
 import EntryDetail from './pages/EntryDetail'
@@ -44,6 +45,7 @@ export default function App() {
         <Routes location={displayed}>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route
             path="/work"
