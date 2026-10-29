@@ -4,8 +4,9 @@ export const photos: Photo[] = [
   {
     label: 'SSP24 test jig',
     caption: 'the full ssp24 test jig, with the fixture, wiring, and touchscreen.',
-    src: '/spyder-ssp24-jig.jpg',
+    src: '/spyder-ssp24-overhead.jpg',
     alt: 'SSP24 test jig on a workbench, showing the top plate, internal wiring, and touchscreen mount.',
+    rotateCCW: true,
   },
   {
     label: 'SSP24 PCB nest',

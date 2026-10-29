@@ -574,7 +574,8 @@ body {
 .portfolio-placeholder small { font-size: 0.8rem; font-style: italic; }
 .portfolio-placeholders--three figure:first-child .portfolio-placeholder { aspect-ratio: 16 / 9; }
 .portfolio-project--compact .portfolio-placeholder { aspect-ratio: 16 / 9; }
-.portfolio-project:has(#portfolio-midnight-sun) .project-gallery { columns: 1; }
+.portfolio-project:has(#portfolio-midnight-sun) .project-gallery { columns: 1; width: 88%; margin-inline: auto; }
+.portfolio-project:has(#portfolio-kitchenbot) .project-gallery { columns: 1; max-width: none; }
 /* Finished arcade machine on the left; build photos stacked on the right. */
 .portfolio-project:has(#portfolio-arduino-arcade-machine) .project-gallery { grid-template-columns: 1.1fr 1fr; align-items: start; gap: 1.25rem; }
 .portfolio-project:has(#portfolio-arduino-arcade-machine) .project-gallery figure:last-child { grid-column: 1; grid-row: 1 / 3; max-width: none !important; }
