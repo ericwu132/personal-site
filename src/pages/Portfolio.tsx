@@ -8,6 +8,7 @@ type PortfolioEntry = {
   title: string
   blurb: string
   project?: Project
+  photoGroups?: Project['photoGroups']
   placeholders?: string[]
   compact?: boolean
 }
@@ -28,7 +29,14 @@ const entries: PortfolioEntry[] = [
     slug: 'midnight-sun',
     title: 'midnight sun — buck-boost converter',
     blurb: 'buck-boost converter schematic and pcb layout for midnight sun.',
-    placeholders: ['converter schematic', 'pcb layout'],
+    photoGroups: [{
+      afterParagraph: 0,
+      photos: [
+        { src: '/buck-boost-3d.png', alt: '3D view of the buck-boost converter PCB', caption: '3d view', width: 865, height: 342 },
+        { src: '/buck-boost-schematic.png', alt: 'Buck-boost converter circuit schematic', caption: 'schematic', width: 1303, height: 811 },
+        { src: '/buck-boost-layout.png', alt: 'Buck-boost converter PCB layout and routing', caption: 'layout', width: 1609, height: 649 },
+      ],
+    }],
     compact: true,
   },
   {
@@ -55,7 +63,9 @@ export default function Portfolio() {
           </div>
           <p className="portfolio-blurb">{entry.blurb}</p>
 
-          {entry.project?.photoGroups?.length ? (
+          {entry.photoGroups ? (
+            <ProjectPhotos groups={entry.photoGroups} />
+          ) : entry.project?.photoGroups?.length ? (
             <ProjectPhotos groups={entry.project.photoGroups} />
           ) : entry.project?.image ? (
             <ProjectPhotos groups={[{ afterParagraph: 0, photos: [{ src: entry.project.image, alt: entry.title, caption: '', width: 1200, height: 900 }] }]} />
