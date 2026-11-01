@@ -165,11 +165,11 @@ export const notes: Entry[] = [
     date: 'sep 2026',
     body: [
       [
-        { label: 'the egg', href: 'https://www.galactanet.com/oneoff/theegg.html' },
+        { label: 'the egg', href: '/the-egg.html' },
         ' by andy weir',
       ],
       [
-        { label: 'the last question', href: 'https://users.ece.cmu.edu/~gamvrosi/thelastq.html' },
+        { label: 'the last question', href: '/the-last-question.html' },
         ' by isaac asimov',
       ],
       [
@@ -177,7 +177,7 @@ export const notes: Entry[] = [
         ' by sugaru miaki (longer, but 100% worth the read)',
       ],
       [
-        { label: 'the end poem', href: 'https://www.theendpoem.com/' },
+        { label: 'the end poem', href: '/end-poem.html' },
         ' by julian gough',
       ],
     ],
