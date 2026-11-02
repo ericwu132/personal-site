@@ -23,12 +23,20 @@ ul {
 
 /* ---------------------------------------------------------------- tokens */
 
+/* Typed palette values interpolate throughout the page without overriding
+   individual components' hover, route, or transform transitions. */
+@property --paper { syntax: '<color>'; inherits: true; initial-value: #2d3a1f; }
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #f5f2ea; }
+@property --ink-soft { syntax: '<color>'; inherits: true; initial-value: #f5f2eab0; }
+@property --ink-faint { syntax: '<color>'; inherits: true; initial-value: #f5f2ea63; }
+@property --rule { syntax: '<color>'; inherits: true; initial-value: #f5f2ea2b; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #98a85e; }
+
 /* Deep olive ground with cream text. Palette sampled from ericwu.work:
    #2d3a1f deep olive, #f5f2ea cream, #98a85e accent.
 
-   The site commits to this one look rather than following the OS light/dark
-   setting. For the inverted cream-paper version, add data-theme="cream" to
-   <html> in index.html. */
+   Every fresh load starts here; the corner toggle offers the ivory palette
+   for the current visit without saving a preference. */
 :root {
   --paper: #2d3a1f;
   --ink: #f5f2ea;
@@ -47,6 +55,44 @@ ul {
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition:
+    --paper 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    --ink 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    --ink-soft 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    --ink-faint 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    --rule 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    --accent 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-toggle {
+  position: fixed;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease;
+}
+
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
+.theme-toggle:active { transform: scale(0.96); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+@media print {
+  .theme-toggle { display: none; }
 }
 
 body {
@@ -520,8 +566,8 @@ body {
 /* Preserve the transparent colour shield; keep UWFE monochrome. */
 .work-logo--shield .entry-logo { filter: none; }
 .work-logo--uwfe .entry-logo { filter: brightness(0) invert(1); }
-:root[data-theme='cream'] .work-logo--shield .entry-logo { filter: none; }
-:root[data-theme='cream'] .work-logo--uwfe .entry-logo { filter: brightness(0); }
+:root:is([data-theme='cream'], [data-theme='white']) .work-logo--shield .entry-logo { filter: none; }
+:root:is([data-theme='cream'], [data-theme='white']) .work-logo--uwfe .entry-logo { filter: brightness(0); }
 .work-entry .work-entry-result { margin-top: 0.75rem; color: var(--ink); }
 .work-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 .spyder-story-section { padding: 1.5rem 0; }
@@ -839,12 +885,24 @@ body {
 /* Inverted: cream paper, deep olive ink.
    Enable with <html data-theme="cream"> in index.html. */
 :root[data-theme='cream'] {
-  --paper: #f5f2ea;
-  --ink: #2d3a1f;
-  --ink-soft: #2d3a1fa6;
-  --ink-faint: #2d3a1f5c;
-  --rule: #2d3a1f2e;
-  --accent: #597143;
+  --paper: #e3e0d3;
+  --ink: #294c35;
+  --ink-soft: #47634b;
+  --ink-faint: #6b7968;
+  --rule: #294c352e;
+  --accent: #3e7048;
+
+  color-scheme: light;
+}
+
+/* Plain white paper with black ink. Enable with data-theme="white". */
+:root[data-theme='white'] {
+  --paper: #fff;
+  --ink: #000;
+  --ink-soft: #333;
+  --ink-faint: #666;
+  --rule: #00000029;
+  --accent: #000;
 
   color-scheme: light;
 }
@@ -853,9 +911,9 @@ body {
    which suit the olive ground as-is but vanish on a light one. Verified
    monochrome (zero coloured pixels), so inverting loses nothing.
    A colour logo added later must be exempted from this rule. */
-:root[data-theme='cream'] .ring-arrow,
-:root[data-theme='cream'] .ring-mark,
-:root[data-theme='cream'] .entry-logo {
+:root:is([data-theme='cream'], [data-theme='white']) .ring-arrow,
+:root:is([data-theme='cream'], [data-theme='white']) .ring-mark,
+:root:is([data-theme='cream'], [data-theme='white']) .entry-logo {
   filter: invert(1);
 }
 

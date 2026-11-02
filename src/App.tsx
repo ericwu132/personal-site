@@ -10,6 +10,7 @@ import About from './pages/About'
 import Notes from './pages/Notes'
 import NotFound from './pages/NotFound'
 import SiteFooter from './components/SiteFooter'
+import ThemeToggle from './components/ThemeToggle'
 import { notes, work } from './content'
 import { useReducedMotion } from './useReducedMotion'
 
@@ -41,6 +42,7 @@ export default function App() {
 
   return (
     <>
+      <ThemeToggle />
       <div className="route" data-leaving={leaving || undefined}>
         <Routes location={displayed}>
           <Route path="/" element={<Home />} />

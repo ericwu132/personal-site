@@ -162,7 +162,7 @@ export const notes: Entry[] = [
   {
     slug: 'short-stories-i-found-interesting',
     title: 'short stories i found interesting',
-    date: 'sep 2026',
+    date: 'ongoing',
     body: [
       [
         { label: 'the egg', href: '/the-egg.html' },
