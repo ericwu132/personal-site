@@ -3,7 +3,7 @@ import PageHeader from '../components/PageHeader'
 import ProjectPhotos from '../components/ProjectPhotos'
 import { PhotoSlot } from '../components/SpyderStory'
 import { photos as spyderPhotos, type Photo } from '../spyderStory'
-import { projects, type Project } from '../content'
+import { projects, work, type Project } from '../content'
 
 type PortfolioEntry = {
   slug: string
@@ -15,6 +15,7 @@ type PortfolioEntry = {
   compact?: boolean
   photos?: Photo[]
   detailsHref?: string
+  gallery?: 'schematics' | 'uwfe'
 }
 
 function existingProject(slug: string, blurb?: string): PortfolioEntry {
@@ -32,6 +33,28 @@ const entries: PortfolioEntry[] = [
   },
   {
     ...existingProject('smart-tatami', 'undergraduate research at the university of waterloo: a pressure-sensing judo mat that measures contact location and relative force during throws. i’m developing the velostat sensor array and a custom altium pcb for scanning and reading the sensors.'),
+    gallery: 'schematics',
+    photoGroups: [{
+      afterParagraph: 0,
+      photos: [
+        { src: '/smart-tatami-power-pico.png', alt: 'Smart Tatami power supply and Raspberry Pi Pico schematic', caption: '', width: 1584, height: 1224 },
+        { src: '/smart-tatami-bias-row-select.png', alt: 'Smart Tatami bias and row selection schematic', caption: '', width: 1584, height: 1224 },
+        { src: '/smart-tatami-adc-output.png', alt: 'Smart Tatami ADC output schematic', caption: '', width: 1584, height: 1224 },
+        { src: '/smart-tatami-input-protection.png', alt: 'Smart Tatami input protection schematic', caption: '', width: 1584, height: 1224 },
+      ],
+    }],
+  },
+  {
+    slug: 'waterloo-formula-electric',
+    title: 'waterloo formula electric',
+    blurb: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.summary!,
+    detailsHref: '/work/waterloo-formula-electric',
+    gallery: 'uwfe',
+    photoGroups: [{
+      afterParagraph: 0,
+      photos: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.photoGroups!
+        .flatMap((group) => group.photos.map((photo) => ({ ...photo, caption: '' }))),
+    }],
   },
   {
     slug: 'midnight-sun',
@@ -70,7 +93,7 @@ export default function Portfolio() {
       <p className="portfolio-intro">robots, electronics, and things i’ve built. a collection of projects, from the first cad sketch to the working prototype.</p>
 
       {entries.map((entry) => (
-        <section className={`portfolio-project${entry.compact ? ' portfolio-project--compact' : ''}`} key={entry.slug} aria-labelledby={`portfolio-${entry.slug}`}>
+        <section className={`portfolio-project${entry.compact ? ' portfolio-project--compact' : ''}${entry.gallery ? ` portfolio-project--${entry.gallery}` : ''}`} key={entry.slug} aria-labelledby={`portfolio-${entry.slug}`}>
           <div className="portfolio-heading">
             <h2 id={`portfolio-${entry.slug}`}>{entry.title}</h2>
             {entry.project && <Link className="text-link portfolio-detail" to={`/projects/${entry.slug}`}>project details <span aria-hidden="true">↗</span></Link>}

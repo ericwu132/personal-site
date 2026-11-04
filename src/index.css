@@ -17,6 +17,9 @@ li {
   padding: 0;
 }
 
+/* Keep the page width fixed when the image viewer locks scrolling. */
+html { scrollbar-gutter: stable; }
+
 ul {
   list-style: none;
 }
@@ -598,6 +601,22 @@ body {
 .project-gallery--two-over-one { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
 .project-gallery--two-over-one figure { margin: 0; min-width: 0; }
 .project-gallery--two-over-one figure:last-child { grid-column: 1 / -1; }
+.image-zoom { display: block; cursor: zoom-in; }
+.image-zoom { transition: transform 180ms ease-out; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .image-zoom:hover { transform: scale(1.015); }
+}
+.image-zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.spyder-story .wp-photo-frame > .image-zoom { width: 100%; height: 100%; }
+.image-viewer { position: fixed; inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: white; cursor: zoom-out; overflow: hidden; }
+.image-viewer[open] { display: block; }
+.image-viewer::backdrop { background: transparent; }
+.image-viewer-shade { position: fixed; inset: 0; width: 100vw; height: 100dvh; background: #08090b; opacity: 0; }
+.image-viewer-stage { position: fixed; left: 50vw; top: 50dvh; translate: -50% -50%; transform-origin: center; will-change: transform; opacity: 0; }
+.image-viewer img { position: absolute; left: 50%; top: 50%; display: block; max-width: none; max-height: none; transform: translate(-50%, -50%); object-fit: contain; cursor: default; }
+.image-viewer img.image-viewer-rotated { transform: translate(-50%, -50%) rotate(-90deg); }
+.image-viewer-close { position: absolute; z-index: 1; top: 0.75rem; right: 1rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0; border: 1px solid rgb(255 255 255 / 30%); border-radius: 50%; background: rgb(0 0 0 / 45%); color: white; font: 2rem/1 sans-serif; cursor: pointer; opacity: 0; }
+.image-viewer-close:focus-visible { outline: 2px solid white; outline-offset: 3px; }
 @media (max-width: 480px) {
   .entry-gallery { columns: 1; }
   .project-gallery--fixed-columns figure:nth-child(5) { break-before: auto; }
@@ -613,6 +632,14 @@ body {
 .portfolio-detail { font-size: 0.9rem; white-space: nowrap; }
 .portfolio-blurb { max-width: 39rem; margin-top: 0.9rem; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.65; }
 .portfolio-project .project-photo-group { margin: 1.75rem 0 0; }
+.portfolio-project--schematics .project-gallery,
+.portfolio-project--uwfe .project-gallery { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: 100%; margin-inline: auto; }
+.portfolio-project--schematics .project-gallery figure,
+.portfolio-project--uwfe .project-gallery figure { min-width: 0; margin: 0; }
+.portfolio-project--uwfe .project-gallery img { max-height: 20rem; object-fit: contain; }
+@media (max-width: 480px) {
+  .portfolio-project--uwfe .project-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .portfolio-placeholders { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 1.75rem; }
 .portfolio-placeholders figure { margin: 0; min-width: 0; }
 .portfolio-placeholders--three figure:first-child { grid-column: 1 / -1; }
