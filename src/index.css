@@ -626,12 +626,59 @@ body {
 
 .portfolio-page { max-width: 48rem; }
 .portfolio-intro { max-width: 35rem; color: var(--ink-soft); font-size: 1.15rem; line-height: 1.65; }
+/* Category tabs, styled like the theme toggle: a bordered pill. Narrow
+   screens get a segmented control above the projects; wide ones get a
+   sticky card in the left margin. A rounded highlight (positioned from JS)
+   slides behind whichever tab is open. */
+.portfolio-layout { position: relative; margin-top: 2rem; scroll-margin-top: 1.5rem; }
+.portfolio-tabs-card { display: inline-block; max-width: 100%; padding: 4px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); }
+.portfolio-tabs-label { display: none; }
+.portfolio-tabs { position: relative; display: flex; overflow-x: auto; scrollbar-width: none; }
+.portfolio-tabs::-webkit-scrollbar { display: none; }
+.portfolio-tabs button { position: relative; z-index: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; flex: none; min-height: 40px; padding: 0.55rem 0.8rem; border: 0; border-radius: 999px; background: none; color: var(--ink-soft); font: inherit; font-size: 0.9rem; white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color 220ms ease; }
+.portfolio-tabs button[aria-selected='true'] { color: var(--ink); }
+.portfolio-tabs button:hover { color: var(--ink); }
+.portfolio-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.portfolio-tab-count { display: none; color: var(--ink-faint); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.portfolio-tab-indicator { position: absolute; left: 0; top: 0; width: var(--w, 0px); height: var(--h, 0px); transform: translate(var(--x, 0px), var(--y, 0px)); border-radius: 999px; background: var(--rule); pointer-events: none; opacity: 0; }
+.portfolio-tab-indicator[data-visible] { opacity: 1; }
+.portfolio-tab-indicator[data-ready] { transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1), height 420ms cubic-bezier(0.22, 1, 0.36, 1); }
+@media (max-width: 380px) {
+  .portfolio-tabs button { padding-inline: 0.65rem; font-size: 0.85rem; }
+}
+/* Switching tabs: the old projects fade out (LEAVE_MS in Portfolio.tsx),
+   then the new ones rise in one after another. */
+.portfolio-panel { transition: opacity 180ms ease, transform 180ms ease; }
+.portfolio-panel[data-leaving] { opacity: 0; transform: translateY(6px); }
+.portfolio-panel > .portfolio-project { animation: portfolio-project-in 520ms cubic-bezier(0.22, 1, 0.36, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+.portfolio-panel > .portfolio-project:first-child { margin-top: 1.75rem; }
+@keyframes portfolio-project-in { from { opacity: 0; transform: translateY(14px); } }
+@media (min-width: 85rem) {
+  .portfolio-tabs-rail { position: absolute; top: 0; bottom: 0; right: calc(100% + 5rem); width: 12rem; }
+  .portfolio-tabs-card { display: block; position: sticky; top: 3rem; padding: 0.4rem; border-radius: 14px; }
+  .portfolio-tabs-label { display: block; margin: 0.45rem 0.8rem 0.35rem; color: var(--ink-faint); font-size: 0.75rem; letter-spacing: 0.04em; }
+  .portfolio-tabs { flex-direction: column; overflow: visible; }
+  .portfolio-tabs button { border-radius: 9px; }
+  .portfolio-tab-count { display: inline; }
+  .portfolio-tab-indicator { border-radius: 9px; }
+  .portfolio-panel > .portfolio-project:first-child { margin-top: 0; }
+}
 .portfolio-project { margin-top: clamp(3rem, 8vw, 5rem); padding-top: 1.75rem; border-top: 1px solid var(--rule); }
 .portfolio-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.65rem 1.5rem; }
 .portfolio-heading h2 { font-size: clamp(1.35rem, 4.5vw, 1.7rem); font-weight: 400; }
 .portfolio-detail { font-size: 0.9rem; white-space: nowrap; }
 .portfolio-blurb { max-width: 39rem; margin-top: 0.9rem; color: var(--ink-soft); font-size: 1.05rem; line-height: 1.65; }
 .portfolio-project .project-photo-group { margin: 1.75rem 0 0; }
+/* Spyder jig photos (the work page keeps them full size). Two columns: the
+   two ssp24 shots side by side, the marine override jig centred beneath at
+   the same size. Stacked on phones. */
+.portfolio-fixture-photos { margin-top: 1.75rem; }
+.portfolio-fixture-photos .wp-photo:first-child { margin-top: 0; }
+@media (min-width: 34rem) {
+  .portfolio-fixture-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 1.25rem; align-items: start; }
+  .portfolio-fixture-photos .wp-photo { margin: 0; }
+  .portfolio-fixture-photos .wp-photo:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc((100% - 1.25rem) / 2); }
+}
 .portfolio-project--schematics .project-gallery,
 .portfolio-project--uwfe .project-gallery { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: 100%; margin-inline: auto; }
 .portfolio-project--schematics .project-gallery figure,
