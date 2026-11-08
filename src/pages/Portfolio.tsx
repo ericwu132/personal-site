@@ -80,7 +80,7 @@ const entries: PortfolioEntry[] = [
     }],
     compact: true,
   },
-  existingProject('omni-assist', ['mechanical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
+  existingProject('omni-assist', ['mechanical', 'electrical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
   {
     slug: 'kitchenbot',
     title: 'kitchenbot',
