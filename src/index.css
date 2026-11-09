@@ -561,6 +561,7 @@ body {
 .work-entry { display: block; color: inherit; text-decoration: none; border-top: 1px solid var(--rule); padding: 1.5rem 0 0; }
 .entries li + li .work-entry { border-top: 0; padding-top: 0; }
 .work-entry-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.work-thumbnail { flex: 0 0 clamp(7rem, 22vw, 12rem); min-width: 0; }
 .work-entry h2 { display: inline-block; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }
 .work-entry:hover h2, .work-entry:focus-visible h2 { border-bottom-color: var(--accent); }
 .work-entry p { color: var(--ink-soft); line-height: 1.5; }
@@ -597,6 +598,8 @@ body {
 .project-photo-group { width: 100%; }
 .project-gallery { columns: 2; column-gap: 1.5rem; }
 .project-gallery figure { margin-bottom: 1.5rem; }
+.project-gallery--schematics { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.project-gallery--schematics figure { min-width: 0; margin: 0; }
 .project-gallery--fixed-columns figure:nth-child(5) { break-before: column; }
 .project-gallery--two-over-one { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
 .project-gallery--two-over-one figure { margin: 0; min-width: 0; }

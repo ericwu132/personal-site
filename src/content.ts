@@ -29,6 +29,8 @@ export type Project = {
  */
 export type Entry = {
   summary?: string
+  image?: string
+  imageAlt?: string
   slug: string
   title: string
   date: string
@@ -41,16 +43,30 @@ export type Entry = {
   logoStyle?: 'shield' | 'uwfe'
   photoGroups?: {
     afterParagraph: number
-    layout?: 'two-over-one' | 'fixed-columns'
+    layout?: 'two-over-one' | 'fixed-columns' | 'schematics'
     heading?: string
     photos: { src: string; alt: string; caption: string; width: number; height: number; cropBottom?: number; maxWidth?: number }[]
   }[]
   body: (string | (string | Link)[])[]
 }
 
+/** The same schematic gallery is used in the portfolio and both research write-ups. */
+export const researchPhotos: NonNullable<Entry['photoGroups']> = [{
+  afterParagraph: 2,
+  layout: 'schematics',
+  photos: [
+    { src: '/smart-tatami-power-pico.png', alt: 'Smart Tatami power supply and Raspberry Pi Pico schematic', caption: '', width: 1584, height: 1224 },
+    { src: '/smart-tatami-bias-row-select.png', alt: 'Smart Tatami bias and row selection schematic', caption: '', width: 1584, height: 1224 },
+    { src: '/smart-tatami-adc-output.png', alt: 'Smart Tatami ADC output schematic', caption: '', width: 1584, height: 1224 },
+    { src: '/smart-tatami-input-protection.png', alt: 'Smart Tatami input protection schematic', caption: '', width: 1584, height: 1224 },
+  ],
+}]
+
 export const projects: Project[] = [
   {
     slug: 'smart-tatami',
+    image: '/smart-tatami-bias-row-select.png',
+    photoGroups: researchPhotos,
     category: 'electromechanical',
     title: 'smart tatami',
     year: 'sep 2026 - present',
@@ -188,6 +204,9 @@ export const notes: Entry[] = [
 export const work: Entry[] = [
   {
     slug: 'undergraduate-researcher',
+    image: '/smart-tatami-bias-row-select.png',
+    imageAlt: 'Smart Tatami bias and row selection schematic',
+    photoGroups: researchPhotos,
     summary: 'developing a pressure-sensing judo mat to measure contact location and relative force.',
     title: 'undergraduate researcher',
     org: 'university of waterloo',

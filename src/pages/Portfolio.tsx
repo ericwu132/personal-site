@@ -42,27 +42,18 @@ const entries: PortfolioEntry[] = [
   {
     ...existingProject('smart-tatami', ['electrical'], 'undergraduate research at the university of waterloo: a pressure-sensing judo mat that measures contact location and relative force during throws. i’m developing the velostat sensor array and a custom altium pcb for scanning and reading the sensors.'),
     gallery: 'schematics',
+  },
+  existingProject('omni-assist', ['mechanical', 'electrical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
+  {
+    slug: 'kitchenbot',
+    title: 'kitchenbot',
+    categories: ['mechanical'],
+    blurb: '',
     photoGroups: [{
       afterParagraph: 0,
       photos: [
-        { src: '/smart-tatami-power-pico.png', alt: 'Smart Tatami power supply and Raspberry Pi Pico schematic', caption: '', width: 1584, height: 1224 },
-        { src: '/smart-tatami-bias-row-select.png', alt: 'Smart Tatami bias and row selection schematic', caption: '', width: 1584, height: 1224 },
-        { src: '/smart-tatami-adc-output.png', alt: 'Smart Tatami ADC output schematic', caption: '', width: 1584, height: 1224 },
-        { src: '/smart-tatami-input-protection.png', alt: 'Smart Tatami input protection schematic', caption: '', width: 1584, height: 1224 },
+        { src: '/kitchenbot-arm-cad.png', alt: 'CAD model of the Kitchenbot robotic arm showing its articulated joints, motors, and mounting brackets.', caption: 'cad of the kitchenbot arm.', width: 1107, height: 1026 },
       ],
-    }],
-  },
-  {
-    slug: 'waterloo-formula-electric',
-    title: 'waterloo formula electric',
-    categories: ['mechanical'],
-    blurb: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.summary!,
-    detailsHref: '/work/waterloo-formula-electric',
-    gallery: 'uwfe',
-    photoGroups: [{
-      afterParagraph: 0,
-      photos: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.photoGroups!
-        .flatMap((group) => group.photos.map((photo) => ({ ...photo, caption: '' }))),
     }],
   },
   {
@@ -80,17 +71,17 @@ const entries: PortfolioEntry[] = [
     }],
     compact: true,
   },
-  existingProject('omni-assist', ['mechanical', 'electrical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
   {
-    slug: 'kitchenbot',
-    title: 'kitchenbot',
+    slug: 'waterloo-formula-electric',
+    title: 'waterloo formula electric',
     categories: ['mechanical'],
-    blurb: '',
+    blurb: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.summary!,
+    detailsHref: '/work/waterloo-formula-electric',
+    gallery: 'uwfe',
     photoGroups: [{
       afterParagraph: 0,
-      photos: [
-        { src: '/kitchenbot-arm-cad.png', alt: 'CAD model of the Kitchenbot robotic arm showing its articulated joints, motors, and mounting brackets.', caption: 'cad of the kitchenbot arm.', width: 1107, height: 1026 },
-      ],
+      photos: work.find((entry) => entry.slug === 'waterloo-formula-electric')!.photoGroups!
+        .flatMap((group) => group.photos.map((photo) => ({ ...photo, caption: '' }))),
     }],
   },
   existingProject('vex-robotics', ['mechanical'], 'competition robots for team 3388c. i designed the robots in fusion 360, from custom laser-cut parts and a winch climbing mechanism to tightly packaged odometry pods. provincial champions and worlds competitors in 2024.'),

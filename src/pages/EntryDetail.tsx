@@ -5,6 +5,7 @@ import type { Entry } from '../content'
 import NotFound from './NotFound'
 import { PhotoSlot } from '../components/SpyderStory'
 import { photos, sections } from '../spyderStory'
+import ProjectPhotos from '../components/ProjectPhotos'
 
 type EntryDetailProps = {
   /** Label and route of the list this entry belongs to. */
@@ -64,6 +65,7 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
             )}
           </p>
           {entry.photoGroups?.filter((group) => group.afterParagraph === i).map((group) => (
+            group.layout === 'schematics' ? <ProjectPhotos key={group.afterParagraph} groups={[group]} /> :
             <div className="entry-photo-group" key={group.afterParagraph}>
               {group.heading && <h2>{group.heading}</h2>}
               <div className={`entry-gallery${group.photos.length === 1 ? ' entry-gallery--single' : ''}`}>

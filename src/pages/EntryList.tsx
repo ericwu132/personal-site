@@ -1,6 +1,7 @@
 import PageHeader from '../components/PageHeader'
 import { Link } from 'react-router-dom'
 import type { Entry } from '../content'
+import Thumb from '../components/Thumb'
 
 type EntryListProps = {
   heading: string
@@ -42,7 +43,11 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
                     <p>{entry.org ? `${entry.org} · ` : ''}{entry.date}</p>
                     {entry.summary && <p className="work-entry-result">{entry.summary}</p>}
                   </div>
-                  {entry.logo && (
+                  {entry.image ? (
+                    <span className="work-thumbnail">
+                      <Thumb src={entry.image} alt={entry.imageAlt ?? entry.title} ratio="22 / 17" />
+                    </span>
+                  ) : entry.logo && (
                     <span className={`work-logo${entry.logoStyle ? ` work-logo--${entry.logoStyle}` : ''}`}>
                       <img className="entry-logo" src={entry.logo} alt="" />
                     </span>
