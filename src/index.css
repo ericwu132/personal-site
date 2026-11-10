@@ -552,18 +552,8 @@ body {
   transition: opacity 0.2s ease, border-color 0.2s ease;
 }
 
-.note-arrow {
-  flex-shrink: 0;
-  font-size: 1.1rem;
-  color: var(--ink-soft);
-  transition: color 0.2s ease;
-}
-
 .note-entry:hover h2,
 .note-entry:focus-visible h2 { opacity: 1; }
-
-.note-entry:hover .note-arrow,
-.note-entry:focus-visible .note-arrow { color: var(--ink); }
 
 .note-entry:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 

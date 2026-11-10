@@ -18,7 +18,6 @@ export default function Notes() {
                     {note.date && <p className="meta">{note.date}</p>}
                     {note.summary && <p>{note.summary}</p>}
                   </div>
-                  <span className="note-arrow" aria-hidden="true">↗</span>
                 </Link>
               </li>
             ))}
