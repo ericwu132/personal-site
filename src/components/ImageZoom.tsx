@@ -27,7 +27,8 @@ function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; al
     const thumbnail = source.querySelector('img')
     const bounds = thumbnail ? imageBounds(thumbnail) : source.getBoundingClientRect()
     root.style.overflow = 'hidden'
-    dialog.current?.showModal()
+    const modal = dialog.current
+    modal?.showModal()
     const previousVisibility = source.style.visibility
     closing.current = false
 
@@ -83,6 +84,8 @@ function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; al
       animations.current = []
       source.style.visibility = previousVisibility
       root.style.overflow = previousOverflow
+      // Release the modal's focus trap before returning to the thumbnail.
+      modal?.close()
       source.focus({ preventScroll: true })
     }
   }, [source])

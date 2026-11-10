@@ -8,15 +8,17 @@ export default function Notes() {
       <PageHeader />
       <h1 className="page-title">notes</h1>
         {notes.length ? (
-          <ul className="entries">
+          <ul className="notes-list">
             {notes.map((note) => (
               <li key={note.slug}>
-                <Link className="entry" to={`/notes/${note.slug}`}>
+                <Link className="entry note-entry" to={`/notes/${note.slug}`}>
                   <div className="entry-text">
+                    {note.readingList && <span className="note-kind">reading list</span>}
                     <h2>{note.title}</h2>
-                    <p className="meta">{note.date}</p>
+                    {note.date && <p className="meta">{note.date}</p>}
                     {note.summary && <p>{note.summary}</p>}
                   </div>
+                  <span className="note-arrow" aria-hidden="true">↗</span>
                 </Link>
               </li>
             ))}

@@ -16,7 +16,7 @@ type NavItem = {
 const items: NavItem[] = [
   { label: 'portfolio', to: '/portfolio' },
   { label: 'work', to: '/work' },
-  { label: 'projects', to: '/projects' },
+  { label: 'all projects', to: '/projects' },
   { label: 'notes', to: '/notes' },
   { label: 'about', to: '/about' },
   { label: 'resume', to: '/EricResumeExternal.pdf', external: true },

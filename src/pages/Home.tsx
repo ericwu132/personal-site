@@ -6,6 +6,7 @@ import Nav from '../components/Nav'
 import Terminal from '../components/Terminal'
 import Signature from '../components/Signature'
 import { greeting, introSeen, markIntroSeen } from '../intro'
+import { displayImage } from '../media'
 
 // Everything below the name arrives at once, on a short stagger from page
 // load — so the page reads as finished while the signature is still drawing,
@@ -81,14 +82,14 @@ export default function Home() {
       >
         <img
           className="hero-portrait"
-          src="/headshot.png"
+          src={displayImage('/headshot.png')}
           alt="Eric smiling"
           width={480}
           height={480}
         />
         <Link className="hero-project" to="/projects/omni-assist">
           <img
-            src="/omniassist.jpg"
+            src={displayImage('/omniassist.jpg')}
             alt="Omni-assist motorized wheelchair attachment with exposed electronics and an aluminum frame"
             width={1024}
             height={778}

@@ -6,6 +6,7 @@ import NotFound from './NotFound'
 import { PhotoSlot } from '../components/SpyderStory'
 import { photos, sections } from '../spyderStory'
 import ProjectPhotos from '../components/ProjectPhotos'
+import { displayImage } from '../media'
 
 type EntryDetailProps = {
   /** Label and route of the list this entry belongs to. */
@@ -26,7 +27,7 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
       <PageHeader backTo={basePath} backLabel={heading} />
 
       <h1 className="page-title">{entry.title}</h1>
-      <p className="meta page-meta">
+      {(entry.org || entry.date) && <p className="meta page-meta">
         {entry.org && (
           <>
             {entry.orgUrl ? (
@@ -36,14 +37,27 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
             ) : (
               entry.org
             )}
-            {' · '}
+            {entry.date && ' · '}
           </>
         )}
         {entry.date}
-      </p>
+      </p>}
+
+      {entry.readingList && (
+        <ul className="reading-list">
+          {entry.readingList.map((story) => (
+            <li key={story.href}>
+              <h2><a className="text-link" href={story.href} target="_blank" rel="noreferrer">{story.label}</a></h2>
+              <p className="reading-author">by {story.author}</p>
+              {story.note && <p className="reading-aside">{story.note}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
 
       {basePath === '/work' && entry.slug === 'spyder-controls' ? (
         <div className="spyder-story">
+          <p className="work-highlight">pcba test fixtures. over 70% fewer false failures on the ssp24 jig.</p>
           {sections.map((section, index) => (
             <section className="spyder-story-section" key={section.title}>
               <h2>{section.title.toLowerCase()}</h2>
@@ -52,7 +66,7 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
             </section>
           ))}
         </div>
-      ) : <div className="prose">
+      ) : entry.body.length > 0 && <div className="prose">
         {entry.body.map((paragraph, i) => (
           <Fragment key={i}>
           <p>
@@ -72,7 +86,7 @@ export default function EntryDetail({ heading, basePath, entries }: EntryDetailP
                 {group.photos.map((photo) => (
                   <figure key={photo.src}>
                     <a href={photo.src} target="_blank" rel="noreferrer" aria-label={`View full photo: ${photo.caption}`}>
-                      <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
+                      <img src={displayImage(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
                     </a>
                     <figcaption>{photo.caption}</figcaption>
                   </figure>

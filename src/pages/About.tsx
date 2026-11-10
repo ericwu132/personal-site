@@ -1,5 +1,6 @@
 import PageHeader from '../components/PageHeader'
 import { Link } from 'react-router-dom'
+import { displayImage } from '../media'
 
 export default function About() {
   return (
@@ -15,9 +16,9 @@ export default function About() {
         <p>i like reading novels, and i'm currently reading <a className="text-link" href="https://www.goodreads.com/book/show/18712215-the-count-of-monte-cristo" target="_blank" rel="noreferrer"><i>the count of monte cristo</i></a> by alexandre dumas.</p>
       </div>
       <div className="about-collage" role="group" aria-label="personal photos">
-        <img src="/IMG_4578.jpg" alt="Mountains and a bridge reflected in turquoise water" width={3024} height={4032} loading="lazy" decoding="async" />
-        <img src="/IMG_4683.jpg" alt="A quiet lake framed by evergreen trees at dusk" width={3024} height={4032} loading="lazy" decoding="async" />
-        <img src="/IMG_4690.jpg" alt="Sunset over distant mountains above a wooded stream" width={3024} height={4032} loading="lazy" decoding="async" />
+        <img src={displayImage('/IMG_4578.jpg')} alt="Mountains and a bridge reflected in turquoise water" width={3024} height={4032} loading="lazy" decoding="async" />
+        <img src={displayImage('/IMG_4683.jpg')} alt="A quiet lake framed by evergreen trees at dusk" width={3024} height={4032} loading="lazy" decoding="async" />
+        <img src={displayImage('/IMG_4690.jpg')} alt="Sunset over distant mountains above a wooded stream" width={3024} height={4032} loading="lazy" decoding="async" />
       </div>
     </main>
   )

@@ -6,6 +6,7 @@ export type Link = {
 }
 
 export type Project = {
+  contribution?: string
   category: 'electromechanical' | 'software'
   photoGroups?: Entry['photoGroups']
   devpostUrl?: string
@@ -33,7 +34,8 @@ export type Entry = {
   imageAlt?: string
   slug: string
   title: string
-  date: string
+  date?: string
+  readingList?: (Link & { author: string; note?: string })[]
   /** Employer, team or publication. Rendered beside the date. */
   org?: string
   /** Optional link for `org`; only followed on the detail page. */
@@ -65,6 +67,7 @@ export const researchPhotos: NonNullable<Entry['photoGroups']> = [{
 export const projects: Project[] = [
   {
     slug: 'smart-tatami',
+    contribution: 'velostat sensor array and custom pcb design in altium.',
     image: '/smart-tatami-bias-row-select.png',
     photoGroups: researchPhotos,
     category: 'electromechanical',
@@ -79,6 +82,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'omni-assist',
+    contribution: 'wheel hubs, motor mounts, and ratcheting clamps in solidworks; motor electronics and frame assembly.',
     category: 'electromechanical',
     devpostUrl: 'https://devpost.com/software/omni-assist',
     title: 'omni-assist',
@@ -100,6 +104,7 @@ export const projects: Project[] = [
   
   {
     slug: 'autonomous-self-driving-robot',
+    contribution: 'lidar costmap and path planning in ros2, containerized in docker.',
     category: 'software',
     title: 'autonomous self driving robot',
     year: 'jan 2026',
@@ -129,6 +134,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'arduino-arcade-machine',
+    contribution: 'sensor and motor mounts in solidworks, plus wiring and programming the dispensing door.',
     category: 'electromechanical',
     devpostUrl: 'https://devpost.com/software/skee-bidi',
     title: 'arduino arcade machine',
@@ -149,6 +155,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'vex-robotics',
+    contribution: 'robot cad in fusion 360, custom laser-cut parts, and tightly packaged odometry pods.',
     blurb: 'robot CAD and mechanical design. provincial champions and worlds competitors in 2024.',
     title: 'vex robotics',
     category: 'electromechanical',
@@ -178,25 +185,13 @@ export const notes: Entry[] = [
   {
     slug: 'short-stories-i-found-interesting',
     title: 'short stories i found interesting',
-    date: 'ongoing',
-    body: [
-      [
-        { label: 'the egg', href: '/the-egg.html' },
-        ' by andy weir',
-      ],
-      [
-        { label: 'the last question', href: '/the-last-question.html' },
-        ' by isaac asimov',
-      ],
-      [
-        { label: 'three days of happiness', href: 'https://vgperson.com/other/mangaviewer.php?m=3' },
-        ' by sugaru miaki (longer, but 100% worth the read)',
-      ],
-      [
-        { label: 'the end poem', href: '/end-poem.html' },
-        ' by julian gough',
-      ],
+    readingList: [
+      { label: 'the egg', href: '/the-egg.html', author: 'andy weir' },
+      { label: 'the last question', href: '/the-last-question.html', author: 'isaac asimov' },
+      { label: 'three days of happiness', href: 'https://vgperson.com/other/mangaviewer.php?m=3', author: 'sugaru miaki', note: 'longer, but 100% worth the read' },
+      { label: 'the end poem', href: '/end-poem.html', author: 'julian gough' },
     ],
+    body: [],
   },
 ]
 
@@ -204,8 +199,6 @@ export const notes: Entry[] = [
 export const work: Entry[] = [
   {
     slug: 'undergraduate-researcher',
-    image: '/smart-tatami-bias-row-select.png',
-    imageAlt: 'Smart Tatami bias and row selection schematic',
     photoGroups: researchPhotos,
     summary: 'developing a pressure-sensing judo mat to measure contact location and relative force.',
     title: 'undergraduate researcher',

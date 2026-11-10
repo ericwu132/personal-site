@@ -48,7 +48,7 @@ const entries: PortfolioEntry[] = [
     slug: 'kitchenbot',
     title: 'kitchenbot',
     categories: ['mechanical'],
-    blurb: '',
+    blurb: 'cad of the kitchenbot arm, showing its joints, motors, and mounting brackets.',
     photoGroups: [{
       afterParagraph: 0,
       photos: [
@@ -60,7 +60,7 @@ const entries: PortfolioEntry[] = [
     slug: 'midnight-sun',
     title: 'buck boost converter',
     categories: ['electrical'],
-    blurb: 'buck-boost converter schematic and pcb layout for midnight sun.',
+    blurb: 'buck-boost converter for midnight sun, from the schematic and pcb routing to the 3d board view.',
     photoGroups: [{
       afterParagraph: 0,
       photos: [

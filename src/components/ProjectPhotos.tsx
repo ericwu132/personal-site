@@ -1,5 +1,6 @@
 import type { Project } from '../content'
 import ImageZoom from './ImageZoom'
+import { displayImage } from '../media'
 
 /** Shared by project write-ups and the portfolio so photo arrangements stay in sync. */
 export default function ProjectPhotos({ groups }: { groups: NonNullable<Project['photoGroups']> }) {
@@ -11,7 +12,7 @@ export default function ProjectPhotos({ groups }: { groups: NonNullable<Project[
           <figure key={photo.src} style={photo.maxWidth ? { maxWidth: photo.maxWidth, width: '100%', marginInline: 'auto' } : undefined}>
             <ImageZoom src={photo.src} alt={photo.alt}>
               <span style={{ display: 'block', overflow: 'hidden', borderRadius: 3, aspectRatio: photo.cropBottom ? `${photo.width} / ${photo.height - photo.cropBottom}` : undefined }}>
-                <img src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />
+                <img src={displayImage(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
               </span>
             </ImageZoom>
             {photo.caption && <figcaption>{photo.caption}</figcaption>}

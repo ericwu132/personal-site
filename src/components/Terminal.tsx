@@ -183,7 +183,9 @@ export default function Terminal({ show, skip = false, hintDelay = 1200 }: Termi
           />
         </p>
         <p className="terminal-response" aria-live="polite">
-          {response || (focused ? 'enter to send! add your email if you’d like me to reply.' : ' ')}
+          {response || (focused ? 'enter to send! add your email if you’d like me to reply.' : (
+            <>or <a className="text-link" href="mailto:e95wu@uwaterloo.ca">get in touch by email</a></>
+          ))}
         </p>
       </AnimatedContent>
     </div>

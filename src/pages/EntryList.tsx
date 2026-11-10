@@ -40,7 +40,7 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
                 <div className="work-entry-row">
                   <div>
                     <h2>{entry.title}</h2>
-                    <p>{entry.org ? `${entry.org} · ` : ''}{entry.date}</p>
+                    <p>{[entry.org, entry.date].filter(Boolean).join(' · ')}</p>
                     {entry.summary && <p className="work-entry-result">{entry.summary}</p>}
                   </div>
                   {entry.image ? (
@@ -59,9 +59,9 @@ export default function EntryList({ heading, basePath, entries, emptyNote }: Ent
                 <h2>{entry.title}</h2>
                 {/* Plain text here, never a link: the whole row is already an
                     anchor, and nesting one inside it is invalid HTML. */}
-                <p className="meta">
-                  {entry.org ? `${entry.org} · ${entry.date}` : entry.date}
-                </p>
+              {(entry.org || entry.date) && <p className="meta">
+                  {[entry.org, entry.date].filter(Boolean).join(' · ')}
+                </p>}
               </div>
 
               {/* alt="" on purpose — the org name sits right beside it, so

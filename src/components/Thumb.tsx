@@ -1,3 +1,5 @@
+import { displayImage } from '../media'
+
 type ThumbProps = {
   /** Path to a real image; falls back to an empty placeholder box. */
   src?: string
@@ -14,7 +16,7 @@ type ThumbProps = {
 export default function Thumb({ src, alt = '', ratio = '16 / 9' }: ThumbProps) {
   return (
     <div className="thumb" style={{ aspectRatio: ratio }}>
-      {src ? <img src={src} alt={alt} loading="lazy" /> : <span aria-hidden="true">image</span>}
+      {src ? <img src={displayImage(src)} alt={alt} loading="lazy" decoding="async" /> : <span aria-hidden="true">image</span>}
     </div>
   )
 }

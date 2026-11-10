@@ -39,6 +39,7 @@ export default function ProjectDetail() {
 
       <div className="prose">
         <p className="lede">{project.blurb}</p>
+        {project.contribution && <p className="project-contribution"><span>my part</span>{project.contribution}</p>}
         {project.body.map((paragraph, i) => (
           <p key={i}>
             {typeof paragraph === 'string' ? paragraph : paragraph.map((part, j) => (

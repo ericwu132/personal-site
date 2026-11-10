@@ -1,11 +1,12 @@
 import type { Photo } from '../spyderStory'
 import ImageZoom from './ImageZoom'
+import { displayImage } from '../media'
 
 export function PhotoSlot({ photo, compact = false }: { photo: Photo; compact?: boolean }) {
   return (
     <figure className={`wp-photo${compact ? ' wp-photo--compact' : ''}`}>
       <div className={`wp-photo-frame${photo.rotateCCW ? ' wp-photo-frame--rotate-ccw' : ''}`}>
-        {photo.src ? <ImageZoom src={photo.src} alt={photo.alt ?? photo.label} rotateCCW={photo.rotateCCW}><img src={photo.src} alt={photo.alt ?? photo.label} loading="lazy" /></ImageZoom> : (
+        {photo.src ? <ImageZoom src={photo.src} alt={photo.alt ?? photo.label} rotateCCW={photo.rotateCCW}><img src={displayImage(photo.src)} alt={photo.alt ?? photo.label} loading="lazy" decoding="async" /></ImageZoom> : (
           <div className="wp-placeholder">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" aria-hidden="true">
               <rect x="3" y="5" width="26" height="22" rx="2" />
