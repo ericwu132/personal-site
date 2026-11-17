@@ -158,7 +158,8 @@ export default function Portfolio() {
   const leaving = active !== shown
   const visible = entries.filter((entry) => inTab(entry, shown))
   if (shown === 'mechanical') {
-    visible.sort((a, b) => Number(a.slug === 'spyder-controls') - Number(b.slug === 'spyder-controls'))
+    const order = ['omni-assist', 'watonomous', 'kitchenbot', 'vex-robotics', 'waterloo-formula-electric', 'spyder-controls']
+    visible.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug))
   }
   const reduced = useReducedMotion()
 
