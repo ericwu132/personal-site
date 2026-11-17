@@ -7,8 +7,8 @@ import { photos as spyderPhotos, type Photo } from '../spyderStory'
 import { projects, work, type Project } from '../content'
 import { useReducedMotion } from '../useReducedMotion'
 
-// Tab order. Electromechanical comes first and lists everything (see inTab).
-const categories = ['electromechanical', 'mechanical', 'electrical'] as const
+// Blender stays separate from the engineering portfolio.
+const categories = ['electromechanical', 'mechanical', 'electrical', 'blender'] as const
 type Category = (typeof categories)[number]
 
 type PortfolioEntry = {
@@ -22,7 +22,7 @@ type PortfolioEntry = {
   compact?: boolean
   photos?: Photo[]
   detailsHref?: string
-  gallery?: 'schematics' | 'uwfe'
+  gallery?: 'schematics' | 'uwfe' | 'blender' | 'watonomous'
 }
 
 function existingProject(slug: string, categories: Category[], blurb?: string): PortfolioEntry {
@@ -44,6 +44,21 @@ const entries: PortfolioEntry[] = [
     gallery: 'schematics',
   },
   existingProject('omni-assist', ['mechanical', 'electrical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
+  {
+    slug: 'watonomous',
+    title: 'watonomous humanoid',
+    categories: ['mechanical'],
+    blurb: 'mechanical design for watonomous\'s bipedal humanoid. i designed and prototyped simplified cnc leg linkages in solidworks and onshape, reducing part count by 66%. i also evaluated bearings and spacers for the leg joints, considering loads, rpm limits, and fit tolerances for dynamic walking.',
+    detailsHref: '/work/watonomous',
+    gallery: 'watonomous',
+    photoGroups: [{
+      afterParagraph: 0,
+      photos: [
+        { src: '/watonomous-leg-linkage.png', alt: 'CAD model of the WATonomous humanoid leg linkage assembly, showing its links, joints, and mounting points.', caption: 'leg linkage assembly.', width: 980, height: 425, maxWidth: 620 },
+        { src: '/watonomous-humanoid-legs.png', alt: 'CAD model of the paired WATonomous humanoid legs with articulated joints and feet.', caption: 'bipedal humanoid legs.', width: 450, height: 769, maxWidth: 270 },
+      ],
+    }],
+  },
   {
     slug: 'kitchenbot',
     title: 'kitchenbot',
@@ -85,14 +100,46 @@ const entries: PortfolioEntry[] = [
     }],
   },
   existingProject('vex-robotics', ['mechanical'], 'competition robots for team 3388c. i designed the robots in fusion 360, from custom laser-cut parts and a winch climbing mechanism to tightly packaged odometry pods. provincial champions and worlds competitors in 2024.'),
+  {
+    slug: 'blender-saturn',
+    title: 'saturn',
+    categories: ['blender'],
+    blurb: 'a saturn scene in blender, from the basic sphere and ring meshes to a textured render. a study in mesh modeling, shader materials, and lighting, with banded colors across the planet and concentric detail in the rings.',
+    gallery: 'blender',
+    photoGroups: [{ afterParagraph: 0, photos: [
+      { src: '/blender/saturn-wip.png', alt: 'Blender solid viewport showing the untextured Saturn sphere, ring mesh, and a moon.', caption: 'wip — blocking out the planet, rings, and moon in the solid viewport.', width: 815, height: 410 },
+      { src: '/blender/saturn.png', alt: 'Rendered Saturn with golden bands, detailed rings, and small moons against a star field.', caption: 'render — materials, lighting, and a star-field background.', width: 1920, height: 1080 },
+    ] }],
+  },
+  {
+    slug: 'blender-black-hole',
+    title: 'black hole',
+    categories: ['blender'],
+    blurb: 'an attempt to recreate gargantua, the black hole from interstellar. i used the shader editor with texture coordinate, mapping, and spherical gradient texture nodes feeding a principled volume shader, then developed the glowing accretion disk and the curved halo around the dark center.',
+    gallery: 'blender',
+    photoGroups: [{ afterParagraph: 0, photos: [
+      { src: '/blender/black-hole-wip.png', alt: 'Blender viewport and shader editor showing an early black-hole scene and its volume node setup.', caption: 'wip — testing the spherical gradient and principled volume node setup.', width: 1920, height: 1080, cropBottom: 40 },
+      { src: '/blender/black-hole.png', alt: 'Interstellar-inspired black hole with a pale blue accretion disk and a bright curved halo.', caption: 'render — a blue accretion disk and an interstellar-inspired silhouette.', width: 1210, height: 678 },
+    ] }],
+  },
+  {
+    slug: 'blender-earth',
+    title: 'earth',
+    categories: ['blender'],
+    blurb: 'an earth render in blender, exploring image textures, cloud detail, and atmospheric shading. the close-up composition puts the focus on the blue atmospheric rim and the transition from daylight into shadow.',
+    gallery: 'blender',
+    photoGroups: [{ afterParagraph: 0, photos: [
+      { src: '/blender/earth.png', alt: 'Close-up render of Earth showing continents, clouds, a blue atmospheric rim, and the day-night boundary.', caption: 'render — surface textures, clouds, and the atmospheric rim.', width: 1920, height: 1080 },
+    ] }],
+  },
 ]
 
 /** Must match the .portfolio-panel[data-leaving] transition in index.css. */
 const LEAVE_MS = 180
 
-// Electromechanical is the umbrella tab: it lists every project.
+// Electromechanical includes all engineering projects, excluding Blender.
 const inTab = (entry: PortfolioEntry, category: Category) =>
-  category === 'electromechanical' || entry.categories.includes(category)
+  category === 'electromechanical' ? !entry.categories.includes('blender') : entry.categories.includes(category)
 
 const counts = Object.fromEntries(
   categories.map((category) => [category, entries.filter((entry) => inTab(entry, category)).length]),
@@ -110,6 +157,9 @@ export default function Portfolio() {
   const [shown, setShown] = useState<Category>(categories[0])
   const leaving = active !== shown
   const visible = entries.filter((entry) => inTab(entry, shown))
+  if (shown === 'mechanical') {
+    visible.sort((a, b) => Number(a.slug === 'spyder-controls') - Number(b.slug === 'spyder-controls'))
+  }
   const reduced = useReducedMotion()
 
   const layoutRef = useRef<HTMLDivElement>(null)

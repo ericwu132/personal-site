@@ -10,7 +10,7 @@ export default function ProjectPhotos({ groups }: { groups: NonNullable<Project[
       <div className={`entry-gallery project-gallery${group.photos.length === 1 ? ' entry-gallery--single' : ''}${group.layout ? ` project-gallery--${group.layout}` : ''}`}>
         {group.photos.map((photo) => (
           <figure key={photo.src} style={photo.maxWidth ? { maxWidth: photo.maxWidth, width: '100%', marginInline: 'auto' } : undefined}>
-            <ImageZoom src={photo.src} alt={photo.alt}>
+            <ImageZoom src={photo.src} alt={photo.alt} cropBottom={photo.cropBottom}>
               <span style={{ display: 'block', overflow: 'hidden', borderRadius: 3, aspectRatio: photo.cropBottom ? `${photo.width} / ${photo.height - photo.cropBottom}` : undefined }}>
                 <img src={displayImage(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
               </span>

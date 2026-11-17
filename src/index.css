@@ -742,6 +742,10 @@ body {
 .portfolio-project--schematics .project-gallery figure,
 .portfolio-project--uwfe .project-gallery figure { min-width: 0; margin: 0; }
 .portfolio-project--uwfe .project-gallery img { max-height: 20rem; object-fit: contain; }
+.portfolio-project--blender .project-gallery,
+.portfolio-project--watonomous .project-gallery { display: grid; columns: auto; grid-template-columns: minmax(0, 1fr); gap: 1.75rem; max-width: none; }
+.portfolio-project--blender .project-gallery figure,
+.portfolio-project--watonomous .project-gallery figure { min-width: 0; margin: 0; }
 @media (max-width: 480px) {
   .portfolio-project--uwfe .project-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

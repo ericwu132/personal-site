@@ -11,7 +11,7 @@ function imageBounds(image: HTMLImageElement) {
   return { width, height, left: bounds.left + (bounds.width - width) / 2, top: bounds.top + (bounds.height - height) / 2 }
 }
 
-function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; alt: string; rotateCCW?: boolean; source: HTMLAnchorElement; onClose: () => void }) {
+function ImageViewer({ src, alt, rotateCCW, cropBottom = 0, source, onClose }: { src: string; alt: string; rotateCCW?: boolean; cropBottom?: number; source: HTMLAnchorElement; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null)
   const stage = useRef<HTMLDivElement>(null)
   const image = useRef<HTMLImageElement>(null)
@@ -25,7 +25,7 @@ function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; al
     const root = document.documentElement
     const previousOverflow = root.style.overflow
     const thumbnail = source.querySelector('img')
-    const bounds = thumbnail ? imageBounds(thumbnail) : source.getBoundingClientRect()
+    const bounds = thumbnail ? (cropBottom ? thumbnail.parentElement!.getBoundingClientRect() : imageBounds(thumbnail)) : source.getBoundingClientRect()
     root.style.overflow = 'hidden'
     const modal = dialog.current
     modal?.showModal()
@@ -38,7 +38,7 @@ function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; al
       const photo = image.current!
       if (!photo.naturalWidth || !stage.current) return
       const naturalWidth = rotateCCW ? photo.naturalHeight : photo.naturalWidth
-      const naturalHeight = rotateCCW ? photo.naturalWidth : photo.naturalHeight
+      const naturalHeight = rotateCCW ? photo.naturalWidth : photo.naturalHeight - cropBottom
       const scale = Math.min(1, Math.max(1, window.innerWidth - 48) / naturalWidth, Math.max(1, window.innerHeight - 112) / naturalHeight)
       const width = naturalWidth * scale
       const height = naturalHeight * scale
@@ -119,14 +119,14 @@ function ImageViewer({ src, alt, rotateCCW, source, onClose }: { src: string; al
       <div ref={shade} className="image-viewer-shade" aria-hidden="true" />
       <button ref={closeButton} className="image-viewer-close" type="button" aria-label="Close image viewer" autoFocus>×</button>
       <div ref={stage} className="image-viewer-stage">
-        <img ref={image} className={rotateCCW ? 'image-viewer-rotated' : undefined} src={src} alt={alt} onClick={(event) => event.stopPropagation()} />
+        <img ref={image} className={rotateCCW ? 'image-viewer-rotated' : undefined} style={cropBottom ? { objectFit: 'cover', objectPosition: 'top' } : undefined} src={src} alt={alt} onClick={(event) => event.stopPropagation()} />
       </div>
     </dialog>,
     document.body,
   )
 }
 
-export default function ImageZoom({ src, alt, rotateCCW, children }: { src: string; alt: string; rotateCCW?: boolean; children: ReactNode }) {
+export default function ImageZoom({ src, alt, rotateCCW, cropBottom, children }: { src: string; alt: string; rotateCCW?: boolean; cropBottom?: number; children: ReactNode }) {
   const [open, setOpen] = useState(false)
   const source = useRef<HTMLAnchorElement>(null)
   return (
@@ -136,7 +136,7 @@ export default function ImageZoom({ src, alt, rotateCCW, children }: { src: stri
         event.preventDefault()
         setOpen(true)
       }}>{children}</a>
-      {open && source.current && <ImageViewer src={src} alt={alt} rotateCCW={rotateCCW} source={source.current} onClose={() => setOpen(false)} />}
+      {open && source.current && <ImageViewer src={src} alt={alt} rotateCCW={rotateCCW} cropBottom={cropBottom} source={source.current} onClose={() => setOpen(false)} />}
     </>
   )
 }
