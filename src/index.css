@@ -652,8 +652,9 @@ body {
 .entry-gallery--single { columns: 1; max-width: 390px; margin-inline: auto; }
 .project-photo-group { width: 100%; }
 .project-gallery { columns: 2; column-gap: 1.5rem; }
+.project-gallery.entry-gallery--single { columns: 1; }
 .project-gallery figure { margin-bottom: 1.5rem; }
-.project-gallery--schematics { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.project-gallery--schematics { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 600px; margin-inline: auto; }
 .project-gallery--schematics figure { min-width: 0; margin: 0; }
 .project-gallery--fixed-columns figure:nth-child(5) { break-before: column; }
 .project-gallery--two-over-one { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
@@ -741,6 +742,10 @@ body {
 .portfolio-project--uwfe .project-gallery { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: 100%; margin-inline: auto; }
 .portfolio-project--schematics .project-gallery figure,
 .portfolio-project--uwfe .project-gallery figure { min-width: 0; margin: 0; }
+.project-gallery--pcb.entry-gallery--single,
+.portfolio-project--schematics .project-gallery--pcb.entry-gallery--single { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 360px; margin-inline: auto; }
+.project-gallery--pcb figure { margin: 0; }
+.project-gallery--pcb figcaption { text-align: center; }
 .portfolio-project--uwfe .project-gallery img { max-height: 20rem; object-fit: contain; }
 .portfolio-project--blender .project-gallery,
 .portfolio-project--watonomous .project-gallery { display: grid; columns: auto; grid-template-columns: minmax(0, 1fr); gap: 1.75rem; max-width: none; }

@@ -45,7 +45,7 @@ export type Entry = {
   logoStyle?: 'shield' | 'uwfe'
   photoGroups?: {
     afterParagraph: number
-    layout?: 'two-over-one' | 'fixed-columns' | 'schematics'
+    layout?: 'two-over-one' | 'fixed-columns' | 'schematics' | 'pcb'
     heading?: string
     photos: { src: string; alt: string; caption: string; width: number; height: number; cropBottom?: number; maxWidth?: number }[]
   }[]
@@ -68,8 +68,17 @@ export const projects: Project[] = [
   {
     slug: 'smart-tatami',
     contribution: 'velostat sensor array and custom pcb design in altium.',
-    image: '/smart-tatami-bias-row-select.png',
-    photoGroups: researchPhotos,
+    image: '/smart-tatami-pcb-wip.png',
+    photoGroups: [
+      {
+        afterParagraph: 3,
+        layout: 'pcb',
+        photos: [
+          { src: '/smart-tatami-pcb-wip.png', alt: 'Smart Tatami PCB design with a Raspberry Pi Pico, connectors, and sensor circuitry. Work in progress.', caption: 'PCB design — WIP', width: 555, height: 629 },
+        ],
+      },
+      ...researchPhotos,
+    ],
     category: 'electromechanical',
     title: 'smart tatami',
     year: 'sep 2026 - present',
