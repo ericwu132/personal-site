@@ -105,32 +105,32 @@ const entries: PortfolioEntry[] = [
     slug: 'blender-saturn',
     title: 'saturn',
     categories: ['blender'],
-    blurb: 'a saturn scene in blender, from the basic sphere and ring meshes to a textured render. a study in mesh modeling, shader materials, and lighting, with banded colors across the planet and concentric detail in the rings.',
+    blurb: '',
     gallery: 'blender',
     photoGroups: [{ afterParagraph: 0, photos: [
-      { src: '/blender/saturn-wip.png', alt: 'Blender solid viewport showing the untextured Saturn sphere, ring mesh, and a moon.', caption: 'wip — blocking out the planet, rings, and moon in the solid viewport.', width: 815, height: 410 },
-      { src: '/blender/saturn.png', alt: 'Rendered Saturn with golden bands, detailed rings, and small moons against a star field.', caption: 'render — materials, lighting, and a star-field background.', width: 1920, height: 1080 },
+      { src: '/blender/saturn-wip.png', alt: 'Blender solid viewport showing the untextured Saturn sphere, ring mesh, and a moon.', caption: 'work in progress', width: 815, height: 410 },
+      { src: '/blender/saturn.png', alt: 'Rendered Saturn with golden bands, detailed rings, and small moons against a star field.', caption: 'final render', width: 1920, height: 1080 },
     ] }],
   },
   {
     slug: 'blender-black-hole',
     title: 'black hole',
     categories: ['blender'],
-    blurb: 'an attempt to recreate gargantua, the black hole from interstellar. i used the shader editor with texture coordinate, mapping, and spherical gradient texture nodes feeding a principled volume shader, then developed the glowing accretion disk and the curved halo around the dark center.',
+    blurb: '',
     gallery: 'blender',
     photoGroups: [{ afterParagraph: 0, photos: [
-      { src: '/blender/black-hole-wip.png', alt: 'Blender viewport and shader editor showing an early black-hole scene and its volume node setup.', caption: 'wip — testing the spherical gradient and principled volume node setup.', width: 1920, height: 1080, cropBottom: 40 },
-      { src: '/blender/black-hole.png', alt: 'Interstellar-inspired black hole with a pale blue accretion disk and a bright curved halo.', caption: 'render — a blue accretion disk and an interstellar-inspired silhouette.', width: 1210, height: 678 },
+      { src: '/blender/black-hole-wip.png', alt: 'Blender viewport and shader editor showing an early black-hole scene and its volume node setup.', caption: 'shader setup', width: 1920, height: 1080, cropBottom: 40 },
+      { src: '/blender/black-hole.png', alt: 'Interstellar-inspired black hole with a pale blue accretion disk and a bright curved halo.', caption: 'final render', width: 1210, height: 678 },
     ] }],
   },
   {
     slug: 'blender-earth',
     title: 'earth',
     categories: ['blender'],
-    blurb: 'an earth render in blender, exploring image textures, cloud detail, and atmospheric shading. the close-up composition puts the focus on the blue atmospheric rim and the transition from daylight into shadow.',
+    blurb: '',
     gallery: 'blender',
     photoGroups: [{ afterParagraph: 0, photos: [
-      { src: '/blender/earth.png', alt: 'Close-up render of Earth showing continents, clouds, a blue atmospheric rim, and the day-night boundary.', caption: 'render — surface textures, clouds, and the atmospheric rim.', width: 1920, height: 1080 },
+      { src: '/blender/earth.png', alt: 'Close-up render of Earth showing continents, clouds, a blue atmospheric rim, and the day-night boundary.', caption: 'final render', width: 1920, height: 1080 },
     ] }],
   },
 ]
@@ -247,7 +247,7 @@ export default function Portfolio() {
     <main className="page portfolio-page">
       <PageHeader />
       <h1 className="page-title">portfolio</h1>
-      <p className="portfolio-intro">robots, electronics, and things i’ve built. a collection of projects, from the first cad sketch to the working prototype.</p>
+      <p className="portfolio-intro">a few things i’ve built.</p>
 
       <div className="portfolio-layout" ref={layoutRef}>
       <nav className="portfolio-tabs-rail" aria-label="Portfolio categories">
