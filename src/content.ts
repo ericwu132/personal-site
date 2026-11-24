@@ -52,7 +52,7 @@ export type Entry = {
   body: (string | (string | Link)[])[]
 }
 
-/** The same schematic gallery is used in the portfolio and both research write-ups. */
+/** Schematic gallery for the research work write-up. */
 export const researchPhotos: NonNullable<Entry['photoGroups']> = [{
   afterParagraph: 2,
   layout: 'schematics',
@@ -68,16 +68,16 @@ export const projects: Project[] = [
   {
     slug: 'smart-tatami',
     contribution: 'velostat sensor array and custom pcb design in altium.',
-    image: '/smart-tatami-pcb-wip.png',
+    image: '/smart-tatami-pcb-3d.png',
     photoGroups: [
       {
         afterParagraph: 3,
         layout: 'pcb',
         photos: [
-          { src: '/smart-tatami-pcb-wip.png', alt: 'Smart Tatami PCB design with a Raspberry Pi Pico, connectors, and sensor circuitry. Work in progress.', caption: 'PCB design — WIP', width: 555, height: 629 },
+          { src: '/smart-tatami-pcb-3d.png', alt: '3D view of the Smart Tatami PCB with a Raspberry Pi Pico, terminal blocks, and sensor circuitry.', caption: '3d board view', width: 948, height: 1146 },
+          { src: '/smart-tatami-pcb-layout.png', alt: 'Smart Tatami PCB layout showing copper routing, component footprints, and the board outline in Altium.', caption: 'pcb layout and routing', width: 943, height: 1152 },
         ],
       },
-      ...researchPhotos,
     ],
     category: 'electromechanical',
     title: 'smart tatami',

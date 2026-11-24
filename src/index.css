@@ -742,10 +742,14 @@ body {
 .portfolio-project--uwfe .project-gallery { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; width: 100%; margin-inline: auto; }
 .portfolio-project--schematics .project-gallery figure,
 .portfolio-project--uwfe .project-gallery figure { min-width: 0; margin: 0; }
-.project-gallery--pcb.entry-gallery--single,
-.portfolio-project--schematics .project-gallery--pcb.entry-gallery--single { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 360px; margin-inline: auto; }
+.project-gallery--pcb,
+.portfolio-project--schematics .project-gallery--pcb { display: grid; columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; max-width: 760px; margin-inline: auto; align-items: start; }
 .project-gallery--pcb figure { margin: 0; }
 .project-gallery--pcb figcaption { text-align: center; }
+@media (max-width: 540px) {
+  .project-gallery--pcb,
+  .portfolio-project--schematics .project-gallery--pcb { grid-template-columns: minmax(0, 1fr); max-width: 400px; }
+}
 .portfolio-project--uwfe .project-gallery img { max-height: 20rem; object-fit: contain; }
 .portfolio-project--blender .project-gallery,
 .portfolio-project--watonomous .project-gallery { display: grid; columns: auto; grid-template-columns: minmax(0, 1fr); gap: 1.75rem; max-width: none; }
