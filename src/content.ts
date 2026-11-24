@@ -68,14 +68,14 @@ export const projects: Project[] = [
   {
     slug: 'smart-tatami',
     contribution: 'velostat sensor array and custom pcb design in altium.',
-    image: '/smart-tatami-pcb-3d.png',
+    image: '/smart-tatami-pcb-3d-transparent.png',
     photoGroups: [
       {
         afterParagraph: 3,
         layout: 'pcb',
         photos: [
-          { src: '/smart-tatami-pcb-3d.png', alt: '3D view of the Smart Tatami PCB with a Raspberry Pi Pico, terminal blocks, and sensor circuitry.', caption: '3d board view', width: 948, height: 1146 },
-          { src: '/smart-tatami-pcb-layout.png', alt: 'Smart Tatami PCB layout showing copper routing, component footprints, and the board outline in Altium.', caption: 'pcb layout and routing', width: 943, height: 1152 },
+          { src: '/smart-tatami-pcb-3d-transparent.png', alt: '3D view of the Smart Tatami PCB with a Raspberry Pi Pico, terminal blocks, and sensor circuitry.', caption: '3d board view', width: 948, height: 1146 },
+          { src: '/smart-tatami-pcb-layout-transparent.png', alt: 'Smart Tatami PCB layout showing copper routing, component footprints, and the board outline in Altium.', caption: 'pcb layout and routing', width: 943, height: 1152 },
         ],
       },
     ],
