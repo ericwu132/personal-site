@@ -42,6 +42,7 @@ const entries: PortfolioEntry[] = [
   {
     ...existingProject('smart-tatami', ['electrical'], 'undergraduate research at the university of waterloo: a pressure-sensing judo mat that measures contact location and relative force during throws. i’m developing the velostat sensor array and a custom altium pcb for scanning and reading the sensors.'),
     gallery: 'schematics',
+    photoGroups: projects.find((project) => project.slug === 'smart-tatami')!.photoGroups!.filter((group) => group.layout === 'pcb'),
   },
   existingProject('omni-assist', ['mechanical', 'electrical'], 'an autonomous wheelchair attachment built at YHack. i designed the wheel hubs, motor mounts, and ratcheting clamps in solidworks, and assembled the motor electronics and aluminium frame. 1st in hardware and best use of viam.'),
   {
@@ -157,8 +158,17 @@ export default function Portfolio() {
   const [shown, setShown] = useState<Category>(categories[0])
   const leaving = active !== shown
   const visible = entries.filter((entry) => inTab(entry, shown))
+  if (shown === 'electromechanical') {
+    // Mix the mechanical and electrical rankings, showing each project once.
+    const order = ['omni-assist', 'smart-tatami', 'watonomous', 'midnight-sun', 'kitchenbot', 'vex-robotics', 'waterloo-formula-electric', 'spyder-controls']
+    visible.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug))
+  }
   if (shown === 'mechanical') {
     const order = ['omni-assist', 'watonomous', 'kitchenbot', 'vex-robotics', 'waterloo-formula-electric', 'spyder-controls']
+    visible.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug))
+  }
+  if (shown === 'electrical') {
+    const order = ['smart-tatami', 'midnight-sun', 'omni-assist', 'spyder-controls']
     visible.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug))
   }
   const reduced = useReducedMotion()

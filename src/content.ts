@@ -52,7 +52,7 @@ export type Entry = {
   body: (string | (string | Link)[])[]
 }
 
-/** Schematic gallery for the research work write-up. */
+/** Schematic gallery shared by the research and project write-ups. */
 export const researchPhotos: NonNullable<Entry['photoGroups']> = [{
   afterParagraph: 2,
   layout: 'schematics',
@@ -78,6 +78,7 @@ export const projects: Project[] = [
           { src: '/smart-tatami-pcb-layout-transparent.png', alt: 'Smart Tatami PCB layout showing copper routing, component footprints, and the board outline in Altium.', caption: 'pcb layout and routing', width: 943, height: 1152 },
         ],
       },
+      ...researchPhotos,
     ],
     category: 'electromechanical',
     title: 'smart tatami',
